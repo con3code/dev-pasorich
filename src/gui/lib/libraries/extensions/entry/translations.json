@@ -1,0 +1,14 @@
+{
+  "en": {
+    "pasorich.entry.name": "PaSoRich",
+    "pasorich.entry.description": "Description of this extension"
+  },
+  "ja": {
+    "pasorich.entry.name": "PaSoRich",
+    "pasorich.entry.description": "拡張機能の説明"
+  },
+  "ja-Hira": {
+    "pasorich.entry.name": "PaSoRich",
+    "pasorich.entry.description": "かくちょうきのうのせつめい"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "en": {
+    "pasorich.name": "PaSoRich",
+    "pasorich.doIt": "do it [SCRIPT]"
+  },
+  "ja": {
+    "pasorich.name": "PaSoRich",
+    "pasorich.doIt": "[SCRIPT] を実行する"
+  },
+  "ja-Hira": {
+    "pasorich.name": "PaSoRich",
+    "pasorich.doIt": "[SCRIPT] をじっこうする"
+  }
+}

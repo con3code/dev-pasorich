@@ -1,12 +1,12 @@
 {
-  "name": "xcx-pasorich",
+  "name": "dev-pasorich",
   "version": "0.0.0",
-  "private": "true",
   "scripts": {
-    "register": "npx xcratch-register --link -C --id=pasorich --gui=\"../scratch-gui\"",
-    "build": "npx xcratch-build --module=pasorich --gui=\"../scratch-gui\""
+    "register": "npx xcratch-register --id=pasorich --gui=../scratch-gui --block=./src/vm/extensions/block --entry=./src/gui/lib/libraries/extensions/entry --core --link --use=extension-support util",
+    "build": "npx xcratch-build --module=pasorich --gui=../scratch-gui --block=./src/vm/extensions/block --entry=./src/gui/lib/libraries/extensions/entry"
   },
   "devDependencies": {
-    "eslint-config-scratch": "^7.0.0"
+    "xcratch-build": "^0.4.0",
+    "xcratch-register": "^0.4.2"
   }
 }
