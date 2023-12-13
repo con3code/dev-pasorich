@@ -2,8 +2,8 @@
  * This is an extension for Xcratch.
  */
 
-import iconURL from './entry-icon.png';
-import insetIconURL from './inset-icon.svg';
+import iconURL from './pasorich_entry.png';
+import insetIconURL from './pasorich_inset.png';
 import translations from './translations.json';
 
 /**
@@ -38,7 +38,7 @@ const entry = {
     disabled: false,
     bluetoothRequired: false,
     internetConnectionRequired: false,
-    helpLink: 'https://con3code.github.io/dev-pasorich/',
+    helpLink: 'https://con3.com/sc2scratch/',
     setFormatMessage: formatter => {
         formatMessage = formatter;
     },

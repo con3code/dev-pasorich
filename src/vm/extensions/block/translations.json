@@ -5,10 +5,39 @@
   },
   "ja": {
     "pasorich.name": "PaSoRich",
-    "pasorich.doIt": "[SCRIPT] を実行する"
+    "pasorich.PaSoRich": "パソリッチ",
+    "pasorich.push2Connect": "押して接続",
+    "pasorich.Connect": "接続",
+    "pasorich.readPasori": "パソリ読み取り",
+    "pasorich.getIdm": "IDm",
+    "pasorich.getHashedIdm": "HexIDm",
+    "pasorich.resetIdm": "IDmリセット",
+    "pasorich.getReadingFlag": "読取中",
+    "pasorich.getWaitingFlag": "待機中",
+    "pasorich.readingDone": "読み取り完了",
+    "pasorich.ConnectReading": "読取中...",
+    "pasorich.ConnectConnected": "接続完了...",
+    "pasorich.ConnectConnecting": "接続中...",
+    "pasorich.ConnectSuccess": "接続成功...",
+    "pasorich.ConnectFailure": "接続失敗..."
   },
   "ja-Hira": {
     "pasorich.name": "PaSoRich",
-    "pasorich.doIt": "[SCRIPT] をじっこうする"
+    "pasorich.PaSoRich": "ぱそりっち",
+    "pasorich.push2Connect": "おしてせつぞく",
+    "pasorich.Connect": "せつぞく",
+    "pasorich.readPasori": "パソリよみとり",
+    "pasorich.getIdm": "IDm",
+    "pasorich.getHashedIdm": "HexIDm",
+    "pasorich.resetIdm": "IDmリセット",
+    "pasorich.getReadingFlag": "よみとりちゅう",
+    "pasorich.getWaitingFlag": "たいきちゅう",
+    "pasorich.readingDone": "よみとりかんりょう",
+    "pasorich.ConnectReading": "よみとりちゅう...",
+    "pasorich.ConnectConnected": "せつぞくかんりょう...",
+    "pasorich.ConnectConnecting": "せつぞくちゅう...",
+    "pasorich.ConnectSuccess": "せつぞくせいこう...",
+    "pasorich.ConnectFailure": "せつぞくしっぱい..."
+
   }
 }

@@ -99,7 +99,7 @@ function ioWaiter(msec) {
     });
 }
 
-
+/*
 function send(sendDevice, data) {
 
     if(inoutFlag){return;}
@@ -147,6 +147,29 @@ function receive(receiveDevice, len, cpy) {
         });
     }
 }
+*/
+
+
+async function send(device, data) {
+    let uint8a = new Uint8Array(data);
+    console.log(">>>>>>>>>>");
+    console.log(uint8a);
+    await device.transferOut(2, uint8a);
+    await sleep(10);
+  }
+  
+  async function receive(device, len) {
+    console.log("<<<<<<<<<<" + len);
+    let data = await device.transferIn(1, len);
+    console.log(data);
+    await sleep(10);
+    let arr = [];
+    for (let i = data.data.byteOffset; i < data.data.byteLength; i++) {
+      arr.push(data.data.getUint8(i));
+    }
+    console.log(arr);
+    return arr;
+  }
 
 function session(sessionDevice) {
 
