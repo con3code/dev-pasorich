@@ -1,7 +1,7 @@
 /*
 
 PaSoRich for Xcratch
-20231214 - 1.5d(001)
+20231215 - 1.5d(002)
 
 */
 
@@ -15,17 +15,37 @@ import blockIcon from './block-icon.png';
 
 
 // Variables
-let pasoriDevice;
+const pasoriDevice = {
+    1729 : {
+        vendorId: 0x054c,
+        productId: 0x06C1,
+        modelType: '380S',
+        modelName: 'RC-S380/S'
+    },
+    1731 : {
+        vendorId: 0x054c,
+        productId: 0x06C3,
+        modelType: '380P',
+        modelName: 'RC-S380/P'
+    },
+    3528 : {
+        vendorId: 0x054c,
+        productId: 0x0dc8,
+        modelType: '300S',
+        modelName: 'RC-S300/S'
+    },
+    3529 : {
+        vendorId: 0x054c,
+        productId: 0x0dc9,
+        modelType: '380P',
+        modelName: 'RC-S300/P'
+    },
+}
 
 let nfcDevices = [];
+let deviceOpening = false;
 
-let idmNum = '';
-let idmNumSha256 = '';
-let deviceFlag = false;
-let readingFlag = false;
-let connectingCount = 0;
-const intvalTimeShort = 12;
-const PaSoRichVersion = "PaSoRich 1.0d";
+const PaSoRichVersion = "PaSoRich 1.5d";
 
 
 /**
@@ -109,7 +129,7 @@ class Scratch3Pasorich {
          */
         this.runtime = runtime;
 
-        nfcDevices.push(null);
+        //nfcDevices.push(null);
 
         console.log(PaSoRichVersion);
 
@@ -133,93 +153,92 @@ class Scratch3Pasorich {
 
 
     openPasori () {
-        const connectMessage = formatMessage({
-            id: 'pasorich.ConnectConnecting',
-            default: 'Connecting...',
-            description: 'ConnectConnecting'
-        });
+        if(deviceOpening) {
+            return;
+        }
 
-        isConnect = connectMessage;
+        return new Promise((resolve, reject) => {
+            deviceOpening = true;
+            //console.log("openPasori:", device);
+            const connectMessage = formatMessage({
+                id: 'pasorich.ConnectConnecting',
+                default: 'Connecting...',
+                description: 'ConnectConnecting'
+            });
 
-        // 新しいデバイスをリクエストして配列に追加する
-        navigator.usb.requestDevice({ filters: [{ vendorId: 0x054c }] })
-            .then(device => {
-                console.log("openPasori:", device);
-                addNfcDevice(device);
-                this.getDeviceNumberMenuItems();
-                isConnect = formatMessage({
-                    id: 'pasorich.ConnectConnected',
-                    default: 'Connected...',
-                    description: 'ConnectConnected'
+            isConnect = connectMessage;
+            
+
+            var usbDeviceConnect = async () => {
+                const usbDevice = await navigator.usb.getDevices();
+            }
+
+            usbDeviceConnect();
+
+            // 新しいデバイスをリクエストして配列に追加する
+            navigator.usb.requestDevice({ filters: [{ vendorId: 0x054c }] })
+                .then(device => {
+                    //console.log("requestDevice:", nfcDevices);
+                    const existingDevice = nfcDevices.find(d => d && d.device.serialNumber === device.serialNumber);
+                    //console.log("existingDevice:", existingDevice);
+                    if (existingDevice) {
+                        // デバイスがすでに存在する場合は何もせずに false を返します。
+                        deviceOpening = false;
+                        resolve(false);
+
+                    } else {
+
+                        console.log("openPasori:", device);
+                        addNfcDevice(device);
+                        this.getDeviceNumberMenuItems();
+                        isConnect = formatMessage({
+                            id: 'pasorich.ConnectConnected',
+                            default: 'Connected...',
+                            description: 'ConnectConnected'
+                        });
+                        deviceOpening = false;
+                        resolve(isConnect);
+                    }
+                })
+                .catch(error => {
+                    deviceOpening = false;
+                    reject(error);
                 });
 
-            });
-
-            this.getDeviceNumberMenuItems();
-            return isConnect;
+                this.getDeviceNumberMenuItems();
+                reject(isConnect);
+        });
 
     }
 
-    setupDevice(device) {
-        return device.open()
-            .then(() => device.selectConfiguration(1))
-            .then(() => device.claimInterface(0))
-            .catch(error => {
-                console.error('Error setting up the device:', error);
-                throw error; // エラーを再スローして、チェーンを中断します。
-            });
-    }
-    
-    
-    readPasori(args) {
-        const deviceNumber = parseInt(args.DEVICE_NUMBER, 10);
-        if (deviceNumber >= 0 && deviceNumber < nfcDevices.length) {
-            const device = getNfcDeviceByNumber(deviceNumber);
-            if (device) {
-                if (device.opened) {
-                    // デバイスが既に開かれている場合は、直接 session 処理を行います。
-                    session(device);
-                } else {
-                    // デバイスが開かれていない場合は、セットアップを行います。
-                    setupDevice(device)
-                        .then(() => session(device))
-                        .catch(error => {
-                            console.error('Failed to setup or session the device:', error);
-                        });
-                }
-            } else {
-                console.error('Invalid device number');
-            }
-        } else {
-            console.error('Device number out of range');
-        }
-    }
+
 
 /*
-    readPasori (args) {
-        const deviceNumber = parseInt(args.DEVICE_NUMBER, 10);
-        if (deviceNumber >= 0 && deviceNumber < nfcDevices.length) {
-            const device = getNfcDeviceByNumber(deviceNumber);
-            console.log("readPasori:", device);
-            if (device && device.opened) {
-                return session(device);
-            }
-        }
-        // 適切なデバイスが見つからない場合や、デバイスが開かれていない場合のエラーハンドリング
-        console.error('Invalid device number or device not opened');
-    }
+
+    readPasori(args) // -> Scratch3Pasorich.prototype.readPasori
+
 */
 
+
     
-    getIdm () {
-        return idmNum;
+    getIdm (args) {
+        return getIdmNum(args.DEVICE_NUMBER);
     }
     
     
     resetIdm () {
+
+        console.log("resetPasoriBefor:", nfcDevices);
+
+        nfcDevices.forEach(nfc => {
+            nfc.idmNum = '';
+            return nfc.device.close();
+        });
+
+/*
         idmNum = '';
         idmNumSha256 ='';
-        readingFlag = false;
+*/
         return;
     }
     
@@ -235,6 +254,8 @@ class Scratch3Pasorich {
         return {
             id: Scratch3Pasorich.EXTENSION_ID,
             name: Scratch3Pasorich.EXTENSION_NAME,
+            color1: '#44c8aa',
+            color2: '#44c8aa',
             extensionURL: Scratch3Pasorich.extensionURL,
             blockIconURI: blockIcon,
             showStatusButton: false,
@@ -261,20 +282,27 @@ class Scratch3Pasorich {
                         DEVICE_NUMBER: {
                             type: ArgumentType.STRING,
                             menu: 'deviceNumberMenu',
-                            defaultValue: '' // デフォルトのデバイス番号
+                            defaultValue: '1' // デフォルトのデバイス番号
                         }
                     }
                 },
-                '---',
                {
                     opcode: 'getIdm',
                     text: formatMessage({
                         id: 'pasorich.getIdm',
-                        default: 'IDm',
+                        default: 'IDm of [DEVICE_NUMBER]',
                         description: 'getIdm'
                     }),
-                    blockType: BlockType.REPORTER
+                    blockType: BlockType.REPORTER,
+                    arguments: {
+                        DEVICE_NUMBER: {
+                            type: ArgumentType.STRING,
+                            menu: 'deviceNumberMenu',
+                            defaultValue: '1' // デフォルトのデバイス番号
+                        }
+                    }
                 },
+                '---',
                 {
                     opcode: 'resetIdm',
                     text: formatMessage({
@@ -297,19 +325,59 @@ class Scratch3Pasorich {
    
     // デバイス番号メニューの項目を生成する関数
     getDeviceNumberMenuItems() {
-
-        console.log("getDeviceNumberMenuItems:", nfcDevices.length);
-        //if (nfcDevices.length === 0) {
+        //console.log("getDeviceNumberMenuItems:", nfcDevices.length);
+        if (nfcDevices.length === 0) {
             // デバイスが登録されていない場合は空の配列を返します。
-        //    return [];
-        //}
-        return nfcDevices.map((_, index) => ({
-            text: index === 0 ?  ' ' : (index).toString(),
-            value: index === 0 ? ' ' : (index).toString()
-        }));
+            return [{
+                text: ' ',
+                value: ' '
+            }];
+        } else {
+            return nfcDevices.map((_, index) => ({
+                text: (index + 1).toString(),
+                value: (index + 1).toString()
+            }));
+    
+        }
     }
 
 
+}
+
+
+
+class AsyncQueue {
+    constructor() {
+        this.queue = [];
+        this.pendingPromise = false;
+    }
+
+    async enqueue(task) {
+        return new Promise((resolve, reject) => {
+            this.queue.push(() => task().then(resolve).catch(reject));
+
+            if (!this.pendingPromise) {
+                this.pendingPromise = true;
+                this.dequeue();
+            }
+        });
+    }
+
+    async dequeue() {
+        if (this.queue.length === 0) {
+            this.pendingPromise = false;
+            return;
+        }
+
+        const task = this.queue.shift();
+        try {
+            await task();
+        } catch (e) {
+            console.error('Error during async task execution:', e);
+        } finally {
+            this.dequeue();
+        }
+    }
 }
 
 
@@ -321,23 +389,69 @@ let isConnect = formatMessage({
 });
 
 
-function hexString(textStr) {
-    const byteArray = new Uint8Array(textStr);
-    const hexCodes = [...byteArray].map(value => {
-        const hexCode = value.toString(16);
-        const paddedHexCode = hexCode.padStart(2, '0');
-        return paddedHexCode;
-    });
-    return hexCodes.join('');
+async function setupDevice(device) {
+
+    let confValue = device.configuration.configurationValue;
+    console.log("configurationValue:", confValue);
+    let interfaceNum = device.configuration.interfaces[confValue - 1].interfaceNumber;	// インターフェイス番号
+    console.log("interfaceNumber:", interfaceNum);
+
+    try {
+        await device.open(); // デバイスを開く
+        await device.selectConfiguration(confValue); // 1 - device.configuration.configurationValue
+        await device.claimInterface(interfaceNum); // インターフェース0をクレームする
+        // その他のセットアップが必要な場合はここに追加
+    } catch (error) {
+        console.error('Error setting up the device:', error);
+    }
+    return device;
 }
 
-function sleep(msec) {
-    return new Promise(resolve =>
-        setTimeout(() => {
-            resolve();
-        }, msec)
-    );
-}
+
+
+// キューインスタンスを作成
+const readPasoriQueue = new AsyncQueue();
+
+// readPasori関数をキューシステムでラップ
+Scratch3Pasorich.prototype.readPasori = function(args) {
+    return readPasoriQueue.enqueue(() => this.readPasoriTask(args));
+};
+
+// 実際のreadPasoriの処理を行う関数
+Scratch3Pasorich.prototype.readPasoriTask = function(args) {
+    // 元のreadPasori関数の処理をここに移動
+    return new Promise((resolve, reject) => {
+        if (args.DEVICE_NUMBER === '') { resolve('No Device'); }
+
+        const deviceNumber = parseInt(args.DEVICE_NUMBER, 10);
+        if (deviceNumber > 0 && deviceNumber <= nfcDevices.length) {
+            const device = getNfcDeviceByNumber(deviceNumber);
+            if (device) {
+                if (device.opened) {
+                    // デバイスが既に開かれている場合は、直接 session 処理を行います。
+                    session(device)
+                        .then(resolve)
+                        .catch(reject);
+                } else {
+                    // デバイスが開かれていない場合は、セットアップを行います。
+                    setupDevice(device)
+                        .then(() => session(device))
+                        .then(resolve)
+                        .catch(error => {
+                            console.error('Failed to setup or session the device:', error);
+                            reject(error);
+                        });
+                }
+            } else {
+                console.error('Invalid device number');
+                reject(new Error('Invalid device number'));
+            }
+        } else {
+            console.error('Device number out of range');
+            reject(new Error('Device No. out of range'));
+        }
+    });
+};
 
 
 async function send(device, data) {
@@ -357,49 +471,40 @@ async function send(device, data) {
   }
 
 
-  async function setupDevice(selectedDevice) {
-    pasoriDevice = selectedDevice;
-    await pasoriDevice.open();
-    await pasoriDevice.selectConfiguration(1);
-    await pasoriDevice.claimInterface(0);
-    deviceFlag = true;
-    sleep(intvalTimeShort);
-    return session(pasoriDevice);
-}
-
-
-
-
 async function session(device) {
-    console.log("session IN 0");
+    //console.log("session IN");
+
+
+
     await send(device, [0x00, 0x00, 0xff, 0x00, 0xff, 0x00]);
-    await send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x2a, 0x01, 0xff, 0x00]);
+    await send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x2a, 0x01, 0xff, 0x00]); //SetCommandType
     await receive(device, 6);
     await receive(device, 13);
-    console.log("session IN 1");
-    await send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x06, 0x00, 0x24, 0x00]);
+    //console.log("session IN 1");
+    await send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x06, 0x00, 0x24, 0x00]); //SwitchRF
     await receive(device, 6);
     await receive(device, 13);
-    console.log("session IN 2");
-    await send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x06, 0x00, 0x24, 0x00]);
+    //console.log("session IN 2");
+    await send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x06, 0x00, 0x24, 0x00]); //SwitchRF
     await receive(device, 6);
     await receive(device, 13);
-    console.log("session IN 3");
-    await send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x06, 0x00, 0xfa, 0xd6, 0x00, 0x01, 0x01, 0x0f, 0x01, 0x18, 0x00]);
+    //console.log("session IN 3");
+    await send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x06, 0x00, 0xfa, 0xd6, 0x00, 0x01, 0x01, 0x0f, 0x01, 0x18, 0x00]); //InSetRF
     await receive(device, 6);
     await receive(device, 13);
-    console.log("session IN 4");
-    await send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x28, 0x00, 0xd8, 0xd6, 0x02, 0x00, 0x18, 0x01, 0x01, 0x02, 0x01, 0x03, 0x00, 0x04, 0x00, 0x05, 0x00, 0x06, 0x00, 0x07, 0x08, 0x08, 0x00, 0x09, 0x00, 0x0a, 0x00, 0x0b, 0x00, 0x0c, 0x00, 0x0e, 0x04, 0x0f, 0x00, 0x10, 0x00, 0x11, 0x00, 0x12, 0x00, 0x13, 0x06, 0x4b, 0x00]);
+    //console.log("session IN 4");
+    await send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x28, 0x00, 0xd8, 0xd6, 0x02, 0x00, 0x18, 0x01, 0x01, 0x02, 0x01, 0x03, 0x00, 0x04, 0x00, 0x05, 0x00, 0x06, 0x00, 0x07, 0x08, 0x08, 0x00, 0x09, 0x00, 0x0a, 0x00, 0x0b, 0x00, 0x0c, 0x00, 0x0e, 0x04, 0x0f, 0x00, 0x10, 0x00, 0x11, 0x00, 0x12, 0x00, 0x13, 0x06, 0x4b, 0x00]); //InSetProtocol
     await receive(device, 6);
     await receive(device, 13);
-    console.log("session IN 5");
-    await send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x04, 0x00, 0xfc, 0xd6, 0x02, 0x00, 0x18, 0x10, 0x00]);
+    //console.log("session IN 5");
+    await send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x04, 0x00, 0xfc, 0xd6, 0x02, 0x00, 0x18, 0x10, 0x00]); //InSetProtocol
     await receive(device, 6);
     await receive(device, 13);
-    console.log("session IN 6");
-    await send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x0a, 0x00, 0xf6, 0xd6, 0x04, 0x6e, 0x00, 0x06, 0x00, 0xff, 0xff, 0x01, 0x00, 0xb3, 0x00]);
+    //console.log("session IN 6");
+    await send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x0a, 0x00, 0xf6, 0xd6, 0x04, 0x6e, 0x00, 0x06, 0x00, 0xff, 0xff, 0x01, 0x00, 0xb3, 0x00]); //InCommRF
     await receive(device, 6);
 
+    //console.log("session Idm");
     let idm = (await receive(device, 37)).slice(17, 25);
     if (idm.length > 0) {
       let idmStr = '';
@@ -410,10 +515,16 @@ async function session(device) {
         idmStr += idm[i].toString(16);
       }
 
-        //console.log("IDm: " + idmStr);
-        idmNum = JSON.parse(JSON.stringify(idmStr));
+        let idmNum = JSON.parse(JSON.stringify(idmStr));
+        await setIdmNum(device, idmNum);
+      
+    } else {
 
+        await setIdmNum(device, '');
 
+    }
+
+/*
         if (!crypto || !crypto.subtle) {
             throw Error("crypto.subtle is not supported.");
         }
@@ -423,63 +534,69 @@ async function session(device) {
             idmNumSha256 = hexString(idmNumStr);
             //console.log("HashedIDm: " + idmNumSha256);
         });
-        readingFlag = false;
-      
-    } else {
 
-        idmNum = '';
-        idmNumSha256 = '';
-        readingFlag = false;
-
-    }
+*/
 
 }
 
 
+// 特定のデバイスのidmNumを取得する関数
+function getIdmNum(deviceNumber) {
+    //console.log("getIdmNum:", deviceNumber);
+    if (deviceNumber > 0 && deviceNumber <= nfcDevices.length) {
+        //console.log("getIdmNumNfc:", nfcDevices);
+        return nfcDevices[deviceNumber - 1].idmNum;
+    }
+    return null; // 範囲外の場合はnullを返す
+}
 
-// デバイスを追加する関数
+
+// 特定のデバイスのidmNumを設定する関数
+function setIdmNum(device, idmNum) {
+    const deviceIndex = nfcDevices.findIndex(d => d.device && d.device.serialNumber === device.serialNumber);
+    console.log("IDm", deviceIndex + 1, ": ", idmNum);
+    //console.log("setIdmIdx:", deviceIndex);
+    if (deviceIndex !== -1) {
+        nfcDevices[deviceIndex].idmNum = idmNum;
+    }
+}
+
+
+
 function addNfcDevice(device) {
-    // null デバイスを受け取った場合の処理
-    if (device === null) {
-        // 既に null デバイスが追加されているかチェックします。
-        if (nfcDevices[0] === null) {
-            // 既に null デバイスが存在する場合は何もせずに false を返します。
+    if (device instanceof USBDevice) {
+        // 通常のデバイスを追加する処理
+        const existingDevice = nfcDevices.find(d => d && d.serialNumber === device.serialNumber);
+        if (existingDevice) {
+            // デバイスがすでに存在する場合は何もせずに false を返します。
             return false;
-        } else {
-            // 配列の先頭に null デバイスを追加します。
-            nfcDevices.unshift(null);
-            return true;
         }
+        // デバイスとそれに関連するidmNumをオブジェクトとして配列に追加します。
+        nfcDevices.push({ device: device, idmNum: '' });
+        return true;
+    } else {
+        console.error('The provided object is not a USBDevice instance.');
     }
-
-    // 通常のデバイスを追加する処理
-    // デバイスがすでに配列に存在するかどうかをチェックします。
-    const existingDevice = nfcDevices.find(d => d && d.serialNumber === device.serialNumber);
-    if (existingDevice) {
-        // デバイスがすでに存在する場合は何もせずに false を返します。
-        return false;
-    }
-    // デバイスを配列に追加します。
-    nfcDevices.push(device);
-    return true;
 }
+
+
 
 
 // デバイスを取得する関数（番号で取得）
 function getNfcDeviceByNumber(deviceNumber) {
     // deviceNumber は配列のインデックスとして機能します。
-    return nfcDevices[deviceNumber];
+    return nfcDevices[deviceNumber - 1].device;
 }
 
 // デバイスを削除する関数（番号で削除）
 function removeNfcDeviceByNumber(deviceNumber) {
-    if (deviceNumber >= 0 && deviceNumber < nfcDevices.length) {
-        let device = nfcDevices[deviceNumber];
+    if (deviceNumber > 0 && deviceNumber <= nfcDevices.length) {
+        let device = nfcDevices[deviceNumber - 1];
         if (device.opened) {
             device.close();
         }
         // 配列から要素を削除します。
-        nfcDevices.splice(deviceNumber, 1);
+        nfcDevices.splice(deviceNumber - 1, 1);
     }
 }
 
@@ -495,6 +612,24 @@ function clearNfcDevices() {
 }
 
 
+
+function hexString(textStr) {
+    const byteArray = new Uint8Array(textStr);
+    const hexCodes = [...byteArray].map(value => {
+        const hexCode = value.toString(16);
+        const paddedHexCode = hexCode.padStart(2, '0');
+        return paddedHexCode;
+    });
+    return hexCodes.join('');
+}
+
+function sleep(msec) {
+    return new Promise(resolve =>
+        setTimeout(() => {
+            resolve();
+        }, msec)
+    );
+}
 
 
 export {
