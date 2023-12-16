@@ -1153,7 +1153,9 @@ var Scratch3Pasorich = /*#__PURE__*/function () {
      */
     this.runtime = runtime;
 
-    //nfcDevices.push(null);
+    //
+    this.whenReadCountMap = new Map();
+    this.allHatBlocksDone_flag = false; // すべてのwhenReadハットブロックが呼ばれたかチェック用
 
     console.log(PaSoRichVersion);
     if (runtime.formatMessage) {
@@ -1268,6 +1270,68 @@ var Scratch3Pasorich = /*#__PURE__*/function () {
       return;
     }
 
+    /*
+    
+        pasoriReadCallback() {
+    
+            for (let [blockId, readList] of this.whenReadCountMap.entries()) {
+                readList.push(deviceNo);
+                this.whenReadCountMap.set(blockId, readList);
+            }
+    
+        }
+    
+    
+        // whenReadが呼ばれたカウントを処理
+        // 更新確認が行なわれる毎に各callCountは増えているので、呼び出された毎にcallCountを0になるまで減らす
+        whenReadCalled(blockId, deviceNo) {
+            //console.log('Called:', instanceId);
+            let readList = this.whenReadCountMap.get(blockId) || [];
+    
+            if (this.allHatBlocksDone_flag) {
+                if(readList.length > 0){
+                    readList.shift();
+                    this.whenReadCountMap.set(blockId, readList);
+                } 
+                //console.log('checkCalled', Array.from(this.whenReadCountMap));
+                this.checkAllWhenReadCalled();
+            } else {
+                this.whenReadCountMap.set(blockId, readList);
+            }
+    
+        }
+    
+    
+    
+        // すべてのwhenUpdatedハットブロックが呼ばれたかチェック
+        // すべてのcallCountが0になったらLisningBankCard_flagをfalseにする
+        checkAllWhenReadCalled() {
+            const allCalled = Array.from(this.whenReadCountMap.values()).every(count => count === 0);
+            //console.log('checkCalled', Array.from(this.whenReadCountMap));
+    
+            if (allCalled) {
+                this.allHatBlocksDone_flag = false;
+            } 
+        }
+    
+    
+        // whenUpdatedハットブロック
+        whenRead(args, util) {
+            const blockId = util.thread.topBlock;
+            const deviceNumber = parseInt(args.DEVICE_NUMBER, 10);
+            //console.log('util:', util.thread.topBlock);
+    
+            let callCount = this.whenReadCountMap.get(blockId) || 0;
+    
+            this.whenReadCalled(blockId, deviceNumber);
+    
+            return callCount > 0;
+        }
+    
+    
+    
+    */
+
     /**
      * @returns {object} metadata for this extension and its blocks.
      */
@@ -1329,6 +1393,21 @@ var Scratch3Pasorich = /*#__PURE__*/function () {
             description: 'reset IDm and Variables'
           }),
           blockType: blockType.COMMAND
+        }, '---', {
+          opcode: 'whenRead',
+          blockType: blockType.HAT,
+          text: formatMessage({
+            id: 'pasorich.whenRead',
+            default: 'when read [DEVICE_NUMBER]',
+            description: 'whenRead'
+          }),
+          arguments: {
+            DEVICE_NUMBER: {
+              type: argumentType.STRING,
+              menu: 'deviceNumberMenu',
+              defaultValue: '1' // デフォルトのデバイス番号
+            }
+          }
         }],
         menus: {
           deviceNumberMenu: {
@@ -1495,45 +1574,38 @@ function _setupDevice() {
     return regenerator.wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
-          confValue = device.configuration.configurationValue;
+          console.log("setupDevice:", device);
+          confValue = device.configurations[0].configurationValue || 1;
           console.log("configurationValue:", confValue);
-          interfaceNum = device.configuration.interfaces[confValue - 1].interfaceNumber; // インターフェイス番号
+          interfaceNum = device.configurations[0].interfaces[confValue - 1].interfaceNumber || 0; // インターフェイス番号
           console.log("interfaceNumber:", interfaceNum);
-          _context4.prev = 4;
-          _context4.next = 7;
+          _context4.prev = 5;
+          _context4.next = 8;
           return device.open();
-        case 7:
-          _context4.next = 9;
+        case 8:
+          _context4.next = 10;
           return device.selectConfiguration(confValue);
-        case 9:
-          _context4.next = 11;
+        case 10:
+          _context4.next = 12;
           return device.claimInterface(interfaceNum);
-        case 11:
-          _context4.next = 16;
+        case 12:
+          _context4.next = 17;
           break;
-        case 13:
-          _context4.prev = 13;
-          _context4.t0 = _context4["catch"](4);
+        case 14:
+          _context4.prev = 14;
+          _context4.t0 = _context4["catch"](5);
           console.error('Error setting up the device:', _context4.t0);
-        case 16:
-          return _context4.abrupt("return", device);
         case 17:
+          return _context4.abrupt("return", device);
+        case 18:
         case "end":
           return _context4.stop();
       }
-    }, _callee4, null, [[4, 13]]);
+    }, _callee4, null, [[5, 14]]);
   }));
   return _setupDevice.apply(this, arguments);
 }
 var readPasoriQueue = new AsyncQueue();
-
-// readPasori関数をキューシステムでラップ
-Scratch3Pasorich.prototype.readPasori = function (args) {
-  var _this3 = this;
-  return readPasoriQueue.enqueue(function () {
-    return _this3.readPasoriTask(args);
-  });
-};
 
 // 実際のreadPasoriの処理を行う関数
 Scratch3Pasorich.prototype.readPasoriTask = function (args) {
@@ -1567,6 +1639,51 @@ Scratch3Pasorich.prototype.readPasoriTask = function (args) {
       reject(new Error('Device No. out of range'));
     }
   });
+};
+
+// readPasori関数でpasoriReadCallbackを呼び出し
+Scratch3Pasorich.prototype.readPasori = function (args) {
+  var _this3 = this;
+  return readPasoriQueue.enqueue(function () {
+    //console.log("readPasori:", args.DEVICE_NUMBER);
+    _this3.pasoriReadCallback(args.DEVICE_NUMBER);
+    return _this3.readPasoriTask(args);
+  });
+};
+Scratch3Pasorich.prototype.pasoriReadCallback = function (deviceNo) {
+  var _this4 = this;
+  this.whenReadCountMap.forEach(function (readList, blockId) {
+    // readListが配列でない場合は新しい配列を割り当てる
+    if (!Array.isArray(readList)) {
+      readList = [];
+      _this4.whenReadCountMap.set(blockId, readList);
+    }
+    readList.push(deviceNo);
+  });
+};
+
+// whenReadCalled関数で、readList配列を参照し、deviceNoを確認
+Scratch3Pasorich.prototype.whenReadCalled = function (blockId, deviceNo) {
+  var readList = this.whenReadCountMap.get(blockId) || [];
+  if (readList.length > 0) {
+    // deviceNoがreadListの先頭にある場合、それを削除
+    var deviceNumber = readList[0];
+    readList.shift();
+    this.whenReadCountMap.set(blockId, readList);
+    return deviceNumber === deviceNo;
+  } else {
+    this.whenReadCountMap.set(blockId, readList);
+    //console.log("whenReadCalled:", readList);
+  }
+  return false;
+};
+
+// whenRead関数で、whenReadCalledの戻り値を利用
+Scratch3Pasorich.prototype.whenRead = function (args, util) {
+  var blockId = util.thread.topBlock;
+  var deviceNumber = args.DEVICE_NUMBER;
+  //console.log("whenRead:", deviceNumber);
+  return this.whenReadCalled(blockId, deviceNumber);
 };
 function send(_x3, _x4) {
   return _send.apply(this, arguments);
