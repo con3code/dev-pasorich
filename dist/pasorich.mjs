@@ -568,514 +568,25 @@ var ArgumentType = {
 };
 var argumentType = ArgumentType;
 
-var Color$1 = /*#__PURE__*/function () {
-  function Color() {
-    _classCallCheck(this, Color);
-  }
-  _createClass(Color, null, [{
-    key: "RGB_BLACK",
-    get:
-    /**
-     * @typedef {object} RGBObject - An object representing a color in RGB format.
-     * @property {number} r - the red component, in the range [0, 255].
-     * @property {number} g - the green component, in the range [0, 255].
-     * @property {number} b - the blue component, in the range [0, 255].
-     */
-
-    /**
-     * @typedef {object} HSVObject - An object representing a color in HSV format.
-     * @property {number} h - hue, in the range [0-359).
-     * @property {number} s - saturation, in the range [0,1].
-     * @property {number} v - value, in the range [0,1].
-     */
-
-    /** @type {RGBObject} */
-    function get() {
-      return {
-        r: 0,
-        g: 0,
-        b: 0
-      };
-    }
-
-    /** @type {RGBObject} */
-  }, {
-    key: "RGB_WHITE",
-    get: function get() {
-      return {
-        r: 255,
-        g: 255,
-        b: 255
-      };
-    }
-
-    /**
-     * Convert a Scratch decimal color to a hex string, #RRGGBB.
-     * @param {number} decimal RGB color as a decimal.
-     * @return {string} RGB color as #RRGGBB hex string.
-     */
-  }, {
-    key: "decimalToHex",
-    value: function decimalToHex(decimal) {
-      if (decimal < 0) {
-        decimal += 0xFFFFFF + 1;
-      }
-      var hex = Number(decimal).toString(16);
-      hex = "#".concat('000000'.substr(0, 6 - hex.length)).concat(hex);
-      return hex;
-    }
-
-    /**
-     * Convert a Scratch decimal color to an RGB color object.
-     * @param {number} decimal RGB color as decimal.
-     * @return {RGBObject} rgb - {r: red [0,255], g: green [0,255], b: blue [0,255]}.
-     */
-  }, {
-    key: "decimalToRgb",
-    value: function decimalToRgb(decimal) {
-      var a = decimal >> 24 & 0xFF;
-      var r = decimal >> 16 & 0xFF;
-      var g = decimal >> 8 & 0xFF;
-      var b = decimal & 0xFF;
-      return {
-        r: r,
-        g: g,
-        b: b,
-        a: a > 0 ? a : 255
-      };
-    }
-
-    /**
-     * Convert a hex color (e.g., F00, #03F, #0033FF) to an RGB color object.
-     * CC-BY-SA Tim Down:
-     * https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
-     * @param {!string} hex Hex representation of the color.
-     * @return {RGBObject} null on failure, or rgb: {r: red [0,255], g: green [0,255], b: blue [0,255]}.
-     */
-  }, {
-    key: "hexToRgb",
-    value: function hexToRgb(hex) {
-      var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-      hex = hex.replace(shorthandRegex, function (m, r, g, b) {
-        return r + r + g + g + b + b;
-      });
-      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-      return result ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
-      } : null;
-    }
-
-    /**
-     * Convert an RGB color object to a hex color.
-     * @param {RGBObject} rgb - {r: red [0,255], g: green [0,255], b: blue [0,255]}.
-     * @return {!string} Hex representation of the color.
-     */
-  }, {
-    key: "rgbToHex",
-    value: function rgbToHex(rgb) {
-      return Color.decimalToHex(Color.rgbToDecimal(rgb));
-    }
-
-    /**
-     * Convert an RGB color object to a Scratch decimal color.
-     * @param {RGBObject} rgb - {r: red [0,255], g: green [0,255], b: blue [0,255]}.
-     * @return {!number} Number representing the color.
-     */
-  }, {
-    key: "rgbToDecimal",
-    value: function rgbToDecimal(rgb) {
-      return (rgb.r << 16) + (rgb.g << 8) + rgb.b;
-    }
-
-    /**
-    * Convert a hex color (e.g., F00, #03F, #0033FF) to a decimal color number.
-    * @param {!string} hex Hex representation of the color.
-    * @return {!number} Number representing the color.
-    */
-  }, {
-    key: "hexToDecimal",
-    value: function hexToDecimal(hex) {
-      return Color.rgbToDecimal(Color.hexToRgb(hex));
-    }
-
-    /**
-     * Convert an HSV color to RGB format.
-     * @param {HSVObject} hsv - {h: hue [0,360), s: saturation [0,1], v: value [0,1]}
-     * @return {RGBObject} rgb - {r: red [0,255], g: green [0,255], b: blue [0,255]}.
-     */
-  }, {
-    key: "hsvToRgb",
-    value: function hsvToRgb(hsv) {
-      var h = hsv.h % 360;
-      if (h < 0) h += 360;
-      var s = Math.max(0, Math.min(hsv.s, 1));
-      var v = Math.max(0, Math.min(hsv.v, 1));
-      var i = Math.floor(h / 60);
-      var f = h / 60 - i;
-      var p = v * (1 - s);
-      var q = v * (1 - s * f);
-      var t = v * (1 - s * (1 - f));
-      var r;
-      var g;
-      var b;
-      switch (i) {
-        default:
-        case 0:
-          r = v;
-          g = t;
-          b = p;
-          break;
-        case 1:
-          r = q;
-          g = v;
-          b = p;
-          break;
-        case 2:
-          r = p;
-          g = v;
-          b = t;
-          break;
-        case 3:
-          r = p;
-          g = q;
-          b = v;
-          break;
-        case 4:
-          r = t;
-          g = p;
-          b = v;
-          break;
-        case 5:
-          r = v;
-          g = p;
-          b = q;
-          break;
-      }
-      return {
-        r: Math.floor(r * 255),
-        g: Math.floor(g * 255),
-        b: Math.floor(b * 255)
-      };
-    }
-
-    /**
-     * Convert an RGB color to HSV format.
-     * @param {RGBObject} rgb - {r: red [0,255], g: green [0,255], b: blue [0,255]}.
-     * @return {HSVObject} hsv - {h: hue [0,360), s: saturation [0,1], v: value [0,1]}
-     */
-  }, {
-    key: "rgbToHsv",
-    value: function rgbToHsv(rgb) {
-      var r = rgb.r / 255;
-      var g = rgb.g / 255;
-      var b = rgb.b / 255;
-      var x = Math.min(Math.min(r, g), b);
-      var v = Math.max(Math.max(r, g), b);
-
-      // For grays, hue will be arbitrarily reported as zero. Otherwise, calculate
-      var h = 0;
-      var s = 0;
-      if (x !== v) {
-        var f = r === x ? g - b : g === x ? b - r : r - g;
-        var i = r === x ? 3 : g === x ? 5 : 1;
-        h = (i - f / (v - x)) * 60 % 360;
-        s = (v - x) / v;
-      }
-      return {
-        h: h,
-        s: s,
-        v: v
-      };
-    }
-
-    /**
-     * Linear interpolation between rgb0 and rgb1.
-     * @param {RGBObject} rgb0 - the color corresponding to fraction1 <= 0.
-     * @param {RGBObject} rgb1 - the color corresponding to fraction1 >= 1.
-     * @param {number} fraction1 - the interpolation parameter. If this is 0.5, for example, mix the two colors equally.
-     * @return {RGBObject} the interpolated color.
-     */
-  }, {
-    key: "mixRgb",
-    value: function mixRgb(rgb0, rgb1, fraction1) {
-      if (fraction1 <= 0) return rgb0;
-      if (fraction1 >= 1) return rgb1;
-      var fraction0 = 1 - fraction1;
-      return {
-        r: fraction0 * rgb0.r + fraction1 * rgb1.r,
-        g: fraction0 * rgb0.g + fraction1 * rgb1.g,
-        b: fraction0 * rgb0.b + fraction1 * rgb1.b
-      };
-    }
-  }]);
-  return Color;
-}();
-var color = Color$1;
-
-var Color = color;
-
-/**
- * @fileoverview
- * Utilities for casting and comparing Scratch data-types.
- * Scratch behaves slightly differently from JavaScript in many respects,
- * and these differences should be encapsulated below.
- * For example, in Scratch, add(1, join("hello", world")) -> 1.
- * This is because "hello world" is cast to 0.
- * In JavaScript, 1 + Number("hello" + "world") would give you NaN.
- * Use when coercing a value before computation.
- */
-var Cast = /*#__PURE__*/function () {
-  function Cast() {
-    _classCallCheck(this, Cast);
-  }
-  _createClass(Cast, null, [{
-    key: "toNumber",
-    value:
-    /**
-     * Scratch cast to number.
-     * Treats NaN as 0.
-     * In Scratch 2.0, this is captured by `interp.numArg.`
-     * @param {*} value Value to cast to number.
-     * @return {number} The Scratch-casted number value.
-     */
-    function toNumber(value) {
-      // If value is already a number we don't need to coerce it with
-      // Number().
-      if (typeof value === 'number') {
-        // Scratch treats NaN as 0, when needed as a number.
-        // E.g., 0 + NaN -> 0.
-        if (Number.isNaN(value)) {
-          return 0;
-        }
-        return value;
-      }
-      var n = Number(value);
-      if (Number.isNaN(n)) {
-        // Scratch treats NaN as 0, when needed as a number.
-        // E.g., 0 + NaN -> 0.
-        return 0;
-      }
-      return n;
-    }
-
-    /**
-     * Scratch cast to boolean.
-     * In Scratch 2.0, this is captured by `interp.boolArg.`
-     * Treats some string values differently from JavaScript.
-     * @param {*} value Value to cast to boolean.
-     * @return {boolean} The Scratch-casted boolean value.
-     */
-  }, {
-    key: "toBoolean",
-    value: function toBoolean(value) {
-      // Already a boolean?
-      if (typeof value === 'boolean') {
-        return value;
-      }
-      if (typeof value === 'string') {
-        // These specific strings are treated as false in Scratch.
-        if (value === '' || value === '0' || value.toLowerCase() === 'false') {
-          return false;
-        }
-        // All other strings treated as true.
-        return true;
-      }
-      // Coerce other values and numbers.
-      return Boolean(value);
-    }
-
-    /**
-     * Scratch cast to string.
-     * @param {*} value Value to cast to string.
-     * @return {string} The Scratch-casted string value.
-     */
-  }, {
-    key: "toString",
-    value: function toString(value) {
-      return String(value);
-    }
-
-    /**
-     * Cast any Scratch argument to an RGB color array to be used for the renderer.
-     * @param {*} value Value to convert to RGB color array.
-     * @return {Array.<number>} [r,g,b], values between 0-255.
-     */
-  }, {
-    key: "toRgbColorList",
-    value: function toRgbColorList(value) {
-      var color = Cast.toRgbColorObject(value);
-      return [color.r, color.g, color.b];
-    }
-
-    /**
-     * Cast any Scratch argument to an RGB color object to be used for the renderer.
-     * @param {*} value Value to convert to RGB color object.
-     * @return {RGBOject} [r,g,b], values between 0-255.
-     */
-  }, {
-    key: "toRgbColorObject",
-    value: function toRgbColorObject(value) {
-      var color;
-      if (typeof value === 'string' && value.substring(0, 1) === '#') {
-        color = Color.hexToRgb(value);
-
-        // If the color wasn't *actually* a hex color, cast to black
-        if (!color) color = {
-          r: 0,
-          g: 0,
-          b: 0,
-          a: 255
-        };
-      } else {
-        color = Color.decimalToRgb(Cast.toNumber(value));
-      }
-      return color;
-    }
-
-    /**
-     * Determine if a Scratch argument is a white space string (or null / empty).
-     * @param {*} val value to check.
-     * @return {boolean} True if the argument is all white spaces or null / empty.
-     */
-  }, {
-    key: "isWhiteSpace",
-    value: function isWhiteSpace(val) {
-      return val === null || typeof val === 'string' && val.trim().length === 0;
-    }
-
-    /**
-     * Compare two values, using Scratch cast, case-insensitive string compare, etc.
-     * In Scratch 2.0, this is captured by `interp.compare.`
-     * @param {*} v1 First value to compare.
-     * @param {*} v2 Second value to compare.
-     * @returns {number} Negative number if v1 < v2; 0 if equal; positive otherwise.
-     */
-  }, {
-    key: "compare",
-    value: function compare(v1, v2) {
-      var n1 = Number(v1);
-      var n2 = Number(v2);
-      if (n1 === 0 && Cast.isWhiteSpace(v1)) {
-        n1 = NaN;
-      } else if (n2 === 0 && Cast.isWhiteSpace(v2)) {
-        n2 = NaN;
-      }
-      if (isNaN(n1) || isNaN(n2)) {
-        // At least one argument can't be converted to a number.
-        // Scratch compares strings as case insensitive.
-        var s1 = String(v1).toLowerCase();
-        var s2 = String(v2).toLowerCase();
-        if (s1 < s2) {
-          return -1;
-        } else if (s1 > s2) {
-          return 1;
-        }
-        return 0;
-      }
-      // Handle the special case of Infinity
-      if (n1 === Infinity && n2 === Infinity || n1 === -Infinity && n2 === -Infinity) {
-        return 0;
-      }
-      // Compare as numbers.
-      return n1 - n2;
-    }
-
-    /**
-     * Determine if a Scratch argument number represents a round integer.
-     * @param {*} val Value to check.
-     * @return {boolean} True if number looks like an integer.
-     */
-  }, {
-    key: "isInt",
-    value: function isInt(val) {
-      // Values that are already numbers.
-      if (typeof val === 'number') {
-        if (isNaN(val)) {
-          // NaN is considered an integer.
-          return true;
-        }
-        // True if it's "round" (e.g., 2.0 and 2).
-        return val === parseInt(val, 10);
-      } else if (typeof val === 'boolean') {
-        // `True` and `false` always represent integer after Scratch cast.
-        return true;
-      } else if (typeof val === 'string') {
-        // If it contains a decimal point, don't consider it an int.
-        return val.indexOf('.') < 0;
-      }
-      return false;
-    }
-  }, {
-    key: "LIST_INVALID",
-    get: function get() {
-      return 'INVALID';
-    }
-  }, {
-    key: "LIST_ALL",
-    get: function get() {
-      return 'ALL';
-    }
-
-    /**
-     * Compute a 1-based index into a list, based on a Scratch argument.
-     * Two special cases may be returned:
-     * LIST_ALL: if the block is referring to all of the items in the list.
-     * LIST_INVALID: if the index was invalid in any way.
-     * @param {*} index Scratch arg, including 1-based numbers or special cases.
-     * @param {number} length Length of the list.
-     * @param {boolean} acceptAll Whether it should accept "all" or not.
-     * @return {(number|string)} 1-based index for list, LIST_ALL, or LIST_INVALID.
-     */
-  }, {
-    key: "toListIndex",
-    value: function toListIndex(index, length, acceptAll) {
-      if (typeof index !== 'number') {
-        if (index === 'all') {
-          return acceptAll ? Cast.LIST_ALL : Cast.LIST_INVALID;
-        }
-        if (index === 'last') {
-          if (length > 0) {
-            return length;
-          }
-          return Cast.LIST_INVALID;
-        } else if (index === 'random' || index === 'any') {
-          if (length > 0) {
-            return 1 + Math.floor(Math.random() * length);
-          }
-          return Cast.LIST_INVALID;
-        }
-      }
-      index = Math.floor(Cast.toNumber(index));
-      if (index < 1 || index > length) {
-        return Cast.LIST_INVALID;
-      }
-      return index;
-    }
-  }]);
-  return Cast;
-}();
-var cast = Cast;
-
 var en = {
-	"pasorich.name": "PaSoRich",
-	"pasorich.doIt": "do it [SCRIPT]"
+	"pasorich.name": "PaSoRich"
 };
 var ja = {
-	"pasorich.name": "PaSoRich",
+	"pasorich.name": "パソリッチ",
 	"pasorich.PaSoRich": "パソリッチ",
 	"pasorich.push2Connect": "押して接続",
 	"pasorich.Connect": "接続",
-	"pasorich.readPasori": "[DEVICE_NUMBER]番のパソリ読み取り",
+	"pasorich.readPasori": "[DEVICE_NUMBER]番の読み取り",
 	"pasorich.getIdm": "[DEVICE_NUMBER]番のIDm",
 	"pasorich.getHashedIdm": "HexIDm",
 	"pasorich.resetIdm": "IDmリセット",
+	"pasorich.resetDevice": "デバイスリセット",
+	"pasorich.whenRead": "[DEVICE_NUMBER]番が読み取られたとき",
 	"pasorich.getReadingFlag": "読取中",
 	"pasorich.getWaitingFlag": "待機中",
 	"pasorich.readingDone": "読み取り完了",
 	"pasorich.ConnectReading": "読取中...",
-	"pasorich.ConnectConnected": "接続完了...",
+	"pasorich.ConnectConnected": "接続済み...",
 	"pasorich.ConnectConnecting": "接続中...",
 	"pasorich.ConnectSuccess": "接続成功...",
 	"pasorich.ConnectFailure": "接続失敗..."
@@ -1084,19 +595,21 @@ var translations = {
 	en: en,
 	ja: ja,
 	"ja-Hira": {
-	"pasorich.name": "PaSoRich",
+	"pasorich.name": "ぱそりっち",
 	"pasorich.PaSoRich": "ぱそりっち",
 	"pasorich.push2Connect": "おしてせつぞく",
 	"pasorich.Connect": "せつぞく",
-	"pasorich.readPasori": "[DEVICE_NUMBER]ばんのパソリよみとり",
-	"pasorich.getIdm": "[DEVICE_NUMBER]番のIDm",
+	"pasorich.readPasori": "[DEVICE_NUMBER]ばんのよみとり",
+	"pasorich.getIdm": "[DEVICE_NUMBER]ばんのIDm",
 	"pasorich.getHashedIdm": "HexIDm",
-	"pasorich.resetIdm": "IDmリセット",
+	"pasorich.resetIdm": "IDmりせっと",
+	"pasorich.resetDevice": "でばいすりせっと",
+	"pasorich.whenRead": "[DEVICE_NUMBER]ばんがよみとられたとき",
 	"pasorich.getReadingFlag": "よみとりちゅう",
 	"pasorich.getWaitingFlag": "たいきちゅう",
 	"pasorich.readingDone": "よみとりかんりょう",
 	"pasorich.ConnectReading": "よみとりちゅう...",
-	"pasorich.ConnectConnected": "せつぞくかんりょう...",
+	"pasorich.ConnectConnected": "せつぞくずみ...",
 	"pasorich.ConnectConnecting": "せつぞくちゅう...",
 	"pasorich.ConnectSuccess": "せつぞくせいこう...",
 	"pasorich.ConnectFailure": "せつぞくしっぱい..."
@@ -1107,7 +620,7 @@ var img = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAA
 
 var nfcDevices = [];
 var deviceOpening = false;
-var PaSoRichVersion = "PaSoRich 1.5d";
+var PaSoRichVersion = 'PaSoRich 1.5d';
 
 /**
  * Formatter which is used for translation.
@@ -1164,51 +677,46 @@ var Scratch3Pasorich = /*#__PURE__*/function () {
     }
   }
   _createClass(Scratch3Pasorich, [{
-    key: "doIt",
-    value: function doIt(args) {
-      var func = new Function("return (".concat(cast.toString(args.SCRIPT), ")"));
-      var result = func.call(this);
-      console.log(result);
-      return result;
-    }
-  }, {
     key: "openPasori",
     value: function openPasori() {
       var _this = this;
       if (deviceOpening) {
         return;
       }
-      return new Promise(function (resolve, reject) {
-        deviceOpening = true;
-        //console.log("openPasori:", device);
-        var connectMessage = formatMessage({
+      if (nfcDevices.length > 0) {
+        isConnect = formatMessage({
+          id: 'pasorich.ConnectConnected',
+          default: 'Connected...',
+          description: 'ConnectConnected'
+        });
+      } else {
+        isConnect = formatMessage({
           id: 'pasorich.ConnectConnecting',
           default: 'Connecting...',
           description: 'ConnectConnecting'
         });
-        isConnect = connectMessage;
-        var usbDeviceConnect = /*#__PURE__*/function () {
-          var _ref = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
-            return regenerator.wrap(function _callee$(_context) {
-              while (1) switch (_context.prev = _context.next) {
-                case 0:
-                  _context.next = 2;
-                  return navigator.usb.getDevices();
-                case 2:
-                  _context.sent;
-                case 3:
-                case "end":
-                  return _context.stop();
-              }
-            }, _callee);
-          }));
-          return function usbDeviceConnect() {
-            return _ref.apply(this, arguments);
-          };
-        }();
-        usbDeviceConnect();
+      }
+      return new Promise(function (resolve, reject) {
+        deviceOpening = true;
+        //console.log("openPasori:", device);
 
-        // 新しいデバイスをリクエストして配列に追加する
+        /*
+        const connectMessage = formatMessage({
+            id: 'pasorich.ConnectConnecting',
+            default: 'Connecting...',
+            description: 'ConnectConnecting'
+        });
+                    isConnect = connectMessage;
+        */
+
+        /*
+        var usbDeviceConnect = async () => {
+            const usbDevice = await navigator.usb.getDevices();
+        }
+         usbDeviceConnect();
+        */
+
+        // 新しいデバイスをリクエストして配列に追加
         navigator.usb.requestDevice({
           filters: [{
             vendorId: 0x054c
@@ -1220,11 +728,11 @@ var Scratch3Pasorich = /*#__PURE__*/function () {
           });
           //console.log("existingDevice:", existingDevice);
           if (existingDevice) {
-            // デバイスがすでに存在する場合は何もせずに false を返します。
+            // デバイスがすでに存在する場合は何もせずに false を返す
             deviceOpening = false;
             resolve(false);
           } else {
-            console.log("openPasori:", device);
+            //console.log("openPasori:", device);
             addNfcDevice(device);
             _this.getDeviceNumberMenuItems();
             isConnect = formatMessage({
@@ -1240,7 +748,7 @@ var Scratch3Pasorich = /*#__PURE__*/function () {
           reject(error);
         });
         _this.getDeviceNumberMenuItems();
-        reject(isConnect);
+        resolve(isConnect);
       });
     }
 
@@ -1257,78 +765,72 @@ var Scratch3Pasorich = /*#__PURE__*/function () {
   }, {
     key: "resetIdm",
     value: function resetIdm() {
-      console.log("resetPasoriBefor:", nfcDevices);
-      nfcDevices.forEach(function (nfc) {
-        nfc.idmNum = '';
-        return nfc.device.close();
+      return new Promise(function (resolve, reject) {
+        if (nfcDevices.length != 0) {
+          nfcDevices.forEach( /*#__PURE__*/function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee(nfc) {
+              return regenerator.wrap(function _callee$(_context) {
+                while (1) switch (_context.prev = _context.next) {
+                  case 0:
+                    nfc.idmNum = '';
+                  case 1:
+                  case "end":
+                    return _context.stop();
+                }
+              }, _callee);
+            }));
+            return function (_x) {
+              return _ref.apply(this, arguments);
+            };
+          }());
+          console.log("resetIdm");
+          //resolve();
+        }
+        resolve();
       });
-
-      /*
-              idmNum = '';
-              idmNumSha256 ='';
-      */
-      return;
+    }
+  }, {
+    key: "resetDevice",
+    value: function resetDevice() {
+      var _this2 = this;
+      return new Promise(function (resolve, reject) {
+        if (nfcDevices.length != 0) {
+          nfcDevices.forEach( /*#__PURE__*/function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee2(nfc) {
+              var confValue, interfaceNum;
+              return regenerator.wrap(function _callee2$(_context2) {
+                while (1) switch (_context2.prev = _context2.next) {
+                  case 0:
+                    nfc.idmNum = '';
+                    confValue = nfc.device.configurations[0].configurationValue || 1;
+                    interfaceNum = nfc.device.configurations[0].interfaces[confValue - 1].interfaceNumber || 0;
+                    _context2.next = 5;
+                    return nfc.device.releaseInterface(interfaceNum);
+                  case 5:
+                    _context2.next = 7;
+                    return nfc.device.close();
+                  case 7:
+                  case "end":
+                    return _context2.stop();
+                }
+              }, _callee2);
+            }));
+            return function (_x2) {
+              return _ref2.apply(this, arguments);
+            };
+          }());
+          nfcDevices.splice(0, nfcDevices.length);
+          _this2.getDeviceNumberMenuItems();
+          console.log("resetDevices");
+          //resolve();
+        }
+        resolve();
+      });
     }
 
     /*
     
-        pasoriReadCallback() {
-    
-            for (let [blockId, readList] of this.whenReadCountMap.entries()) {
-                readList.push(deviceNo);
-                this.whenReadCountMap.set(blockId, readList);
-            }
-    
-        }
-    
-    
-        // whenReadが呼ばれたカウントを処理
-        // 更新確認が行なわれる毎に各callCountは増えているので、呼び出された毎にcallCountを0になるまで減らす
-        whenReadCalled(blockId, deviceNo) {
-            //console.log('Called:', instanceId);
-            let readList = this.whenReadCountMap.get(blockId) || [];
-    
-            if (this.allHatBlocksDone_flag) {
-                if(readList.length > 0){
-                    readList.shift();
-                    this.whenReadCountMap.set(blockId, readList);
-                } 
-                //console.log('checkCalled', Array.from(this.whenReadCountMap));
-                this.checkAllWhenReadCalled();
-            } else {
-                this.whenReadCountMap.set(blockId, readList);
-            }
-    
-        }
-    
-    
-    
-        // すべてのwhenUpdatedハットブロックが呼ばれたかチェック
-        // すべてのcallCountが0になったらLisningBankCard_flagをfalseにする
-        checkAllWhenReadCalled() {
-            const allCalled = Array.from(this.whenReadCountMap.values()).every(count => count === 0);
-            //console.log('checkCalled', Array.from(this.whenReadCountMap));
-    
-            if (allCalled) {
-                this.allHatBlocksDone_flag = false;
-            } 
-        }
-    
-    
-        // whenUpdatedハットブロック
-        whenRead(args, util) {
-            const blockId = util.thread.topBlock;
-            const deviceNumber = parseInt(args.DEVICE_NUMBER, 10);
-            //console.log('util:', util.thread.topBlock);
-    
-            let callCount = this.whenReadCountMap.get(blockId) || 0;
-    
-            this.whenReadCalled(blockId, deviceNumber);
-    
-            return callCount > 0;
-        }
-    
-    
+        whenRead(args, util) // -> Scratch3Pasorich.prototype.whenRead
     
     */
 
@@ -1342,8 +844,8 @@ var Scratch3Pasorich = /*#__PURE__*/function () {
       return {
         id: Scratch3Pasorich.EXTENSION_ID,
         name: Scratch3Pasorich.EXTENSION_NAME,
-        color1: '#44c8aa',
-        color2: '#44c8aa',
+        color1: '#608DD3',
+        color2: '#608DD3',
         extensionURL: Scratch3Pasorich.extensionURL,
         blockIconURI: img,
         showStatusButton: false,
@@ -1359,7 +861,7 @@ var Scratch3Pasorich = /*#__PURE__*/function () {
           opcode: 'readPasori',
           text: formatMessage({
             id: 'pasorich.readPasori',
-            default: 'read PaSoRi device [DEVICE_NUMBER]',
+            default: 'read #[DEVICE_NUMBER]reader',
             description: 'readPasori'
           }),
           blockType: blockType.COMMAND,
@@ -1374,7 +876,7 @@ var Scratch3Pasorich = /*#__PURE__*/function () {
           opcode: 'getIdm',
           text: formatMessage({
             id: 'pasorich.getIdm',
-            default: 'IDm of [DEVICE_NUMBER]',
+            default: 'IDm of #[DEVICE_NUMBER]',
             description: 'getIdm'
           }),
           blockType: blockType.REPORTER,
@@ -1393,12 +895,20 @@ var Scratch3Pasorich = /*#__PURE__*/function () {
             description: 'reset IDm and Variables'
           }),
           blockType: blockType.COMMAND
+        }, {
+          opcode: 'resetDevice',
+          text: formatMessage({
+            id: 'pasorich.resetDevice',
+            default: 'reset Device',
+            description: 'reset Devices'
+          }),
+          blockType: blockType.COMMAND
         }, '---', {
           opcode: 'whenRead',
           blockType: blockType.HAT,
           text: formatMessage({
             id: 'pasorich.whenRead',
-            default: 'when read [DEVICE_NUMBER]',
+            default: 'when read #[DEVICE_NUMBER]reader',
             description: 'whenRead'
           }),
           arguments: {
@@ -1424,7 +934,7 @@ var Scratch3Pasorich = /*#__PURE__*/function () {
     value: function getDeviceNumberMenuItems() {
       //console.log("getDeviceNumberMenuItems:", nfcDevices.length);
       if (nfcDevices.length === 0) {
-        // デバイスが登録されていない場合は空の配列を返します。
+        // デバイスが登録されていない場合は空の配列を返す
         return [{
           text: ' ',
           value: ' '
@@ -1491,27 +1001,27 @@ var AsyncQueue = /*#__PURE__*/function () {
   _createClass(AsyncQueue, [{
     key: "enqueue",
     value: function () {
-      var _enqueue = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee2(task) {
-        var _this2 = this;
-        return regenerator.wrap(function _callee2$(_context2) {
-          while (1) switch (_context2.prev = _context2.next) {
+      var _enqueue = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee3(task) {
+        var _this3 = this;
+        return regenerator.wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
             case 0:
-              return _context2.abrupt("return", new Promise(function (resolve, reject) {
-                _this2.queue.push(function () {
+              return _context3.abrupt("return", new Promise(function (resolve, reject) {
+                _this3.queue.push(function () {
                   return task().then(resolve).catch(reject);
                 });
-                if (!_this2.pendingPromise) {
-                  _this2.pendingPromise = true;
-                  _this2.dequeue();
+                if (!_this3.pendingPromise) {
+                  _this3.pendingPromise = true;
+                  _this3.dequeue();
                 }
               }));
             case 1:
             case "end":
-              return _context2.stop();
+              return _context3.stop();
           }
-        }, _callee2);
+        }, _callee3);
       }));
-      function enqueue(_x) {
+      function enqueue(_x3) {
         return _enqueue.apply(this, arguments);
       }
       return enqueue;
@@ -1519,38 +1029,38 @@ var AsyncQueue = /*#__PURE__*/function () {
   }, {
     key: "dequeue",
     value: function () {
-      var _dequeue = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee3() {
+      var _dequeue = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee4() {
         var task;
-        return regenerator.wrap(function _callee3$(_context3) {
-          while (1) switch (_context3.prev = _context3.next) {
+        return regenerator.wrap(function _callee4$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
             case 0:
               if (!(this.queue.length === 0)) {
-                _context3.next = 3;
+                _context4.next = 3;
                 break;
               }
               this.pendingPromise = false;
-              return _context3.abrupt("return");
+              return _context4.abrupt("return");
             case 3:
               task = this.queue.shift();
-              _context3.prev = 4;
-              _context3.next = 7;
+              _context4.prev = 4;
+              _context4.next = 7;
               return task();
             case 7:
-              _context3.next = 12;
+              _context4.next = 12;
               break;
             case 9:
-              _context3.prev = 9;
-              _context3.t0 = _context3["catch"](4);
-              console.error('Error during async task execution:', _context3.t0);
+              _context4.prev = 9;
+              _context4.t0 = _context4["catch"](4);
+              console.error('Error during async task execution:', _context4.t0);
             case 12:
-              _context3.prev = 12;
+              _context4.prev = 12;
               this.dequeue();
-              return _context3.finish(12);
+              return _context4.finish(12);
             case 15:
             case "end":
-              return _context3.stop();
+              return _context4.stop();
           }
-        }, _callee3, this, [[4, 9, 12, 15]]);
+        }, _callee4, this, [[4, 9, 12, 15]]);
       }));
       function dequeue() {
         return _dequeue.apply(this, arguments);
@@ -1565,43 +1075,43 @@ var isConnect = formatMessage({
   default: 'Push to Connect.',
   description: 'push2Connect'
 });
-function setupDevice(_x2) {
+function setupDevice(_x4) {
   return _setupDevice.apply(this, arguments);
 } // キューインスタンスを作成
 function _setupDevice() {
-  _setupDevice = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee4(device) {
+  _setupDevice = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee5(device) {
     var confValue, interfaceNum;
-    return regenerator.wrap(function _callee4$(_context4) {
-      while (1) switch (_context4.prev = _context4.next) {
+    return regenerator.wrap(function _callee5$(_context5) {
+      while (1) switch (_context5.prev = _context5.next) {
         case 0:
           console.log("setupDevice:", device);
           confValue = device.configurations[0].configurationValue || 1;
           console.log("configurationValue:", confValue);
           interfaceNum = device.configurations[0].interfaces[confValue - 1].interfaceNumber || 0; // インターフェイス番号
           console.log("interfaceNumber:", interfaceNum);
-          _context4.prev = 5;
-          _context4.next = 8;
+          _context5.prev = 5;
+          _context5.next = 8;
           return device.open();
         case 8:
-          _context4.next = 10;
+          _context5.next = 10;
           return device.selectConfiguration(confValue);
         case 10:
-          _context4.next = 12;
+          _context5.next = 12;
           return device.claimInterface(interfaceNum);
         case 12:
-          _context4.next = 17;
+          _context5.next = 17;
           break;
         case 14:
-          _context4.prev = 14;
-          _context4.t0 = _context4["catch"](5);
-          console.error('Error setting up the device:', _context4.t0);
+          _context5.prev = 14;
+          _context5.t0 = _context5["catch"](5);
+          console.error('This device is currently in use or down:', _context5.t0);
         case 17:
-          return _context4.abrupt("return", device);
+          return _context5.abrupt("return", device);
         case 18:
         case "end":
-          return _context4.stop();
+          return _context5.stop();
       }
-    }, _callee4, null, [[5, 14]]);
+    }, _callee5, null, [[5, 14]]);
   }));
   return _setupDevice.apply(this, arguments);
 }
@@ -1609,20 +1119,21 @@ var readPasoriQueue = new AsyncQueue();
 
 // 実際のreadPasoriの処理を行う関数
 Scratch3Pasorich.prototype.readPasoriTask = function (args) {
-  // 元のreadPasori関数の処理をここに移動
+  var _this4 = this;
   return new Promise(function (resolve, reject) {
-    if (args.DEVICE_NUMBER === '') {
-      resolve('No Device');
-    }
+    //console.log("readPasoriTask:", args.DEVICE_NUMBER);
+    //if (args.DEVICE_NUMBER === '') { resolve('No Device'); }
+
     var deviceNumber = parseInt(args.DEVICE_NUMBER, 10);
     if (deviceNumber > 0 && deviceNumber <= nfcDevices.length) {
       var device = getNfcDeviceByNumber(deviceNumber);
+      //console.log("readOpenPasori:", device);
       if (device) {
         if (device.opened) {
-          // デバイスが既に開かれている場合は、直接 session 処理を行います。
+          // デバイスが既に開かれている場合は、直接 session 処理を行う
           session(device).then(resolve).catch(reject);
         } else {
-          // デバイスが開かれていない場合は、セットアップを行います。
+          // デバイスが開かれていない場合は、セットアップを行う
           setupDevice(device).then(function () {
             return session(device);
           }).then(resolve).catch(function (error) {
@@ -1632,31 +1143,78 @@ Scratch3Pasorich.prototype.readPasoriTask = function (args) {
         }
       } else {
         console.error('Invalid device number');
-        reject(new Error('Invalid device number'));
+        reject('Invalid device');
       }
     } else {
-      console.error('Device number out of range');
-      reject(new Error('Device No. out of range'));
+      // 新しいデバイスをリクエストして配列に追加する
+      navigator.usb.requestDevice({
+        filters: [{
+          vendorId: 0x054c
+        }]
+      }).then(function (device) {
+        //console.log("requestDevice:", nfcDevices);
+        var existingDevice = nfcDevices.find(function (d) {
+          return d && d.device.serialNumber === device.serialNumber;
+        });
+        //console.log("existingDevice:", existingDevice);
+        if (existingDevice) ; else {
+          //console.log("readSetPasori:", device);
+          addNfcDevice(device);
+          _this4.getDeviceNumberMenuItems();
+          isConnect = formatMessage({
+            id: 'pasorich.ConnectConnected',
+            default: 'Connected...',
+            description: 'ConnectConnected'
+          });
+          //deviceOpening = false;
+        }
+      }).then(function () {
+        var device = getNfcDeviceByNumber(deviceNumber);
+        //console.log("readOpenPasori:", device);
+        if (device) {
+          if (device.opened) {
+            // デバイスが既に開かれている場合は、直接 session 処理を行う
+            session(device).then(resolve).catch(reject);
+          } else {
+            // デバイスが開かれていない場合は、セットアップを行う
+            setupDevice(device).then(function () {
+              return session(device);
+            }).then(resolve).catch(function (error) {
+              console.error('Failed to setup or session the device:', error);
+              reject(error);
+            });
+          }
+        } else {
+          console.error('Invalid device number');
+          reject('Invalid device');
+        }
+      }).catch(function (error) {
+        deviceOpening = false;
+        reject(error);
+      });
+      _this4.getDeviceNumberMenuItems();
     }
+  }).then(function () {
+    _this4.pasoriReadCallback(args.DEVICE_NUMBER);
   });
 };
 
 // readPasori関数でpasoriReadCallbackを呼び出し
 Scratch3Pasorich.prototype.readPasori = function (args) {
-  var _this3 = this;
+  var _this5 = this;
   return readPasoriQueue.enqueue(function () {
     //console.log("readPasori:", args.DEVICE_NUMBER);
-    _this3.pasoriReadCallback(args.DEVICE_NUMBER);
-    return _this3.readPasoriTask(args);
+    //this.pasoriReadCallback(args.DEVICE_NUMBER);
+    return _this5.readPasoriTask(args);
   });
 };
 Scratch3Pasorich.prototype.pasoriReadCallback = function (deviceNo) {
-  var _this4 = this;
+  var _this6 = this;
   this.whenReadCountMap.forEach(function (readList, blockId) {
     // readListが配列でない場合は新しい配列を割り当てる
     if (!Array.isArray(readList)) {
       readList = [];
-      _this4.whenReadCountMap.set(blockId, readList);
+      _this6.whenReadCountMap.set(blockId, readList);
     }
     readList.push(deviceNo);
   });
@@ -1685,136 +1243,136 @@ Scratch3Pasorich.prototype.whenRead = function (args, util) {
   //console.log("whenRead:", deviceNumber);
   return this.whenReadCalled(blockId, deviceNumber);
 };
-function send(_x3, _x4) {
+function send(_x5, _x6) {
   return _send.apply(this, arguments);
 }
 function _send() {
-  _send = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee5(device, data) {
+  _send = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee6(device, data) {
     var uint8a;
-    return regenerator.wrap(function _callee5$(_context5) {
-      while (1) switch (_context5.prev = _context5.next) {
-        case 0:
-          uint8a = new Uint8Array(data);
-          _context5.next = 3;
-          return device.transferOut(2, uint8a);
-        case 3:
-          _context5.next = 5;
-          return sleep(10);
-        case 5:
-        case "end":
-          return _context5.stop();
-      }
-    }, _callee5);
-  }));
-  return _send.apply(this, arguments);
-}
-function receive(_x5, _x6) {
-  return _receive.apply(this, arguments);
-}
-function _receive() {
-  _receive = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee6(device, len) {
-    var data, arr, i;
     return regenerator.wrap(function _callee6$(_context6) {
       while (1) switch (_context6.prev = _context6.next) {
         case 0:
-          _context6.next = 2;
+          uint8a = new Uint8Array(data);
+          _context6.next = 3;
+          return device.transferOut(2, uint8a);
+        case 3:
+          _context6.next = 5;
+          return sleep(10);
+        case 5:
+        case "end":
+          return _context6.stop();
+      }
+    }, _callee6);
+  }));
+  return _send.apply(this, arguments);
+}
+function receive(_x7, _x8) {
+  return _receive.apply(this, arguments);
+}
+function _receive() {
+  _receive = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee7(device, len) {
+    var data, arr, i;
+    return regenerator.wrap(function _callee7$(_context7) {
+      while (1) switch (_context7.prev = _context7.next) {
+        case 0:
+          _context7.next = 2;
           return device.transferIn(1, len);
         case 2:
-          data = _context6.sent;
-          _context6.next = 5;
+          data = _context7.sent;
+          _context7.next = 5;
           return sleep(10);
         case 5:
           arr = [];
           for (i = data.data.byteOffset; i < data.data.byteLength; i++) {
             arr.push(data.data.getUint8(i));
           }
-          return _context6.abrupt("return", arr);
+          return _context7.abrupt("return", arr);
         case 8:
         case "end":
-          return _context6.stop();
+          return _context7.stop();
       }
-    }, _callee6);
+    }, _callee7);
   }));
   return _receive.apply(this, arguments);
 }
-function session(_x7) {
+function session(_x9) {
   return _session.apply(this, arguments);
 } // 特定のデバイスのidmNumを取得する関数
 function _session() {
-  _session = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee7(device) {
+  _session = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee8(device) {
     var idm, idmStr, i, idmNum;
-    return regenerator.wrap(function _callee7$(_context7) {
-      while (1) switch (_context7.prev = _context7.next) {
+    return regenerator.wrap(function _callee8$(_context8) {
+      while (1) switch (_context8.prev = _context8.next) {
         case 0:
-          _context7.next = 2;
+          _context8.next = 2;
           return send(device, [0x00, 0x00, 0xff, 0x00, 0xff, 0x00]);
         case 2:
-          _context7.next = 4;
+          _context8.next = 4;
           return send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x2a, 0x01, 0xff, 0x00]);
         case 4:
-          _context7.next = 6;
+          _context8.next = 6;
           return receive(device, 6);
         case 6:
-          _context7.next = 8;
+          _context8.next = 8;
           return receive(device, 13);
         case 8:
-          _context7.next = 10;
+          _context8.next = 10;
           return send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x06, 0x00, 0x24, 0x00]);
         case 10:
-          _context7.next = 12;
+          _context8.next = 12;
           return receive(device, 6);
         case 12:
-          _context7.next = 14;
+          _context8.next = 14;
           return receive(device, 13);
         case 14:
-          _context7.next = 16;
+          _context8.next = 16;
           return send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x06, 0x00, 0x24, 0x00]);
         case 16:
-          _context7.next = 18;
+          _context8.next = 18;
           return receive(device, 6);
         case 18:
-          _context7.next = 20;
+          _context8.next = 20;
           return receive(device, 13);
         case 20:
-          _context7.next = 22;
+          _context8.next = 22;
           return send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x06, 0x00, 0xfa, 0xd6, 0x00, 0x01, 0x01, 0x0f, 0x01, 0x18, 0x00]);
         case 22:
-          _context7.next = 24;
+          _context8.next = 24;
           return receive(device, 6);
         case 24:
-          _context7.next = 26;
+          _context8.next = 26;
           return receive(device, 13);
         case 26:
-          _context7.next = 28;
+          _context8.next = 28;
           return send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x28, 0x00, 0xd8, 0xd6, 0x02, 0x00, 0x18, 0x01, 0x01, 0x02, 0x01, 0x03, 0x00, 0x04, 0x00, 0x05, 0x00, 0x06, 0x00, 0x07, 0x08, 0x08, 0x00, 0x09, 0x00, 0x0a, 0x00, 0x0b, 0x00, 0x0c, 0x00, 0x0e, 0x04, 0x0f, 0x00, 0x10, 0x00, 0x11, 0x00, 0x12, 0x00, 0x13, 0x06, 0x4b, 0x00]);
         case 28:
-          _context7.next = 30;
+          _context8.next = 30;
           return receive(device, 6);
         case 30:
-          _context7.next = 32;
+          _context8.next = 32;
           return receive(device, 13);
         case 32:
-          _context7.next = 34;
+          _context8.next = 34;
           return send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x04, 0x00, 0xfc, 0xd6, 0x02, 0x00, 0x18, 0x10, 0x00]);
         case 34:
-          _context7.next = 36;
+          _context8.next = 36;
           return receive(device, 6);
         case 36:
-          _context7.next = 38;
+          _context8.next = 38;
           return receive(device, 13);
         case 38:
-          _context7.next = 40;
+          _context8.next = 40;
           return send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x0a, 0x00, 0xf6, 0xd6, 0x04, 0x6e, 0x00, 0x06, 0x00, 0xff, 0xff, 0x01, 0x00, 0xb3, 0x00]);
         case 40:
-          _context7.next = 42;
+          _context8.next = 42;
           return receive(device, 6);
         case 42:
-          _context7.next = 44;
+          _context8.next = 44;
           return receive(device, 37);
         case 44:
-          idm = _context7.sent.slice(17, 25);
+          idm = _context8.sent.slice(17, 25);
           if (!(idm.length > 0)) {
-            _context7.next = 53;
+            _context8.next = 53;
             break;
           }
           idmStr = '';
@@ -1825,19 +1383,19 @@ function _session() {
             idmStr += idm[i].toString(16);
           }
           idmNum = JSON.parse(JSON.stringify(idmStr));
-          _context7.next = 51;
+          _context8.next = 51;
           return setIdmNum(device, idmNum);
         case 51:
-          _context7.next = 55;
+          _context8.next = 55;
           break;
         case 53:
-          _context7.next = 55;
+          _context8.next = 55;
           return setIdmNum(device, '');
         case 55:
         case "end":
-          return _context7.stop();
+          return _context8.stop();
       }
-    }, _callee7);
+    }, _callee8);
   }));
   return _session.apply(this, arguments);
 }
@@ -1855,7 +1413,7 @@ function setIdmNum(device, idmNum) {
   var deviceIndex = nfcDevices.findIndex(function (d) {
     return d.device && d.device.serialNumber === device.serialNumber;
   });
-  console.log("IDm", deviceIndex + 1, ": ", idmNum);
+  console.log("IDm #", deviceIndex + 1, ": ", idmNum);
   //console.log("setIdmIdx:", deviceIndex);
   if (deviceIndex !== -1) {
     nfcDevices[deviceIndex].idmNum = idmNum;
@@ -1868,10 +1426,10 @@ function addNfcDevice(device) {
       return d && d.serialNumber === device.serialNumber;
     });
     if (existingDevice) {
-      // デバイスがすでに存在する場合は何もせずに false を返します。
+      // デバイスがすでに存在する場合は何もせずに false を返す
       return false;
     }
-    // デバイスとそれに関連するidmNumをオブジェクトとして配列に追加します。
+    // デバイスとそれに関連するidmNumをオブジェクトとして配列に追加
     nfcDevices.push({
       device: device,
       idmNum: ''
@@ -1884,7 +1442,7 @@ function addNfcDevice(device) {
 
 // デバイスを取得する関数（番号で取得）
 function getNfcDeviceByNumber(deviceNumber) {
-  // deviceNumber は配列のインデックスとして機能します。
+  // deviceNumber は配列のインデックスとして機能
   return nfcDevices[deviceNumber - 1].device;
 }
 function sleep(msec) {
