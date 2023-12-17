@@ -1,7 +1,7 @@
 /*
 
 PaSoRich for Xcratch
-20231216 - 1.5d(006)
+20231218 - 1.5d(007)
 
 */
 
@@ -477,26 +477,39 @@ var getEndpoint = ( argInterface, argValue ) => {
 
 async function setupDevice(device) {
     let modelType = device.productId;
+    let pasoriDeviceModel = pasoriDevice[modelType];
+    let deviceInterface;
 
     console.log("setupDevice:", device);
     let confValue = device.configurations[0].configurationValue || 1;
     console.log("configurationValue:", confValue);
-    let interfaceNum = device.configurations[0].interfaces[0].interfaceNumber || 0;	// インターフェイス番号
-    console.log("interfaceNumber:", interfaceNum);
-    let deviceEndpoint = getEndpoint(device.configurations[0].interfaces[0], 'in');
-    let pasoriDeviceModel = pasoriDevice[modelType];
-		pasoriDeviceModel.endPointInNum = deviceEndpoint.endpointNumber;
-        console.log("endpointInNumber:", pasoriDeviceModel.endPointInNum);
-        //console.log("endpointInNumber:", deviceEndpoint.endpointNumber);
-        deviceEndpoint = getEndpoint(device.configurations[0].interfaces[0], 'out');
-		pasoriDeviceModel.endPointOutNum = deviceEndpoint.endpointNumber;
-        console.log("endpointOutNumber:", pasoriDeviceModel.endPointOutNum);
-        //console.log("endpointOutNumber:", deviceEndpoint.endpointNumber);
+
+    // RC-S300
+    if (device.productId === 0x0dc8 || device.productId === 0x0dc9) {
+        deviceInterface = device.configuration.interfaces.filter(v => v.alternate.interfaceClass == 255)[0];	// インターフェイス番号
+        //let interfaceNum = device.configurations[0].interfaces[0].interfaceNumber || 0;	// インターフェイス番号
+        pasoriDeviceModel.endPointInNum = deviceInterface.alternate.endpoints.filter(e => e.direction == 'in')[0].endpointNumber;
+        pasoriDeviceModel.endPointOutNum = deviceInterface.alternate.endpoints.filter(e => e.direction == 'out')[0].endpointNumber;
+    }
+
+    // RC-S380
+    if (device.productId === 0x06C1 || device.productId === 0x06C3) {
+        deviceInterface = device.configurations[0].interfaces[0];	// インターフェイス番号
+        let deviceEndpoint = await getEndpoint(deviceInterface, 'in');
+            pasoriDeviceModel.endPointInNum = deviceEndpoint.endpointNumber;
+            //console.log("endpointInNumber:", pasoriDeviceModel.endPointInNum);
+            deviceEndpoint = await getEndpoint(deviceInterface, 'out');
+            pasoriDeviceModel.endPointOutNum = deviceEndpoint.endpointNumber;
+            //console.log("endpointOutNumber:", pasoriDeviceModel.endPointOutNum);
+    }
+
+    console.log("interfaceNumber:", deviceInterface.interfaceNumber);
+
 
     try {
         await device.open(); // デバイスを開く
         await device.selectConfiguration(confValue);
-        await device.claimInterface(interfaceNum);
+        await device.claimInterface(deviceInterface.interfaceNumber);
     } catch (error) {
         console.error('This device is currently in use or down:', error);
     }
@@ -668,10 +681,10 @@ async function send300(device, endpointOut, data) {
     retVal[6] = ++seqNumber ;       // 認識番号
   
     0 != dataLen && retVal.set( uint8data, 10 ); // コマンド追加
-    console.log(">>>>>>>>>>");
-    console.log(Array.from(retVal).map(v => v.toString(16)));
+    //console.log(">>>>>>>>>>");
+    //console.log(Array.from(retVal).map(v => v.toString(16)));
     await device.transferOut(endpointOut, retVal);
-    await sleep(50);
+    await sleep(30);
   }
 
 async function send(device, endpointOut, data) {
@@ -691,10 +704,20 @@ async function send(device, endpointOut, data) {
   }
 
 
+
+function padding_zero(num,p){
+    return ("0".repeat(p*1) + num).slice(-(p*1));
+}
+
+function dec2HexString(n){
+    return padding_zero((n*1).toString(16),2);
+    //return padding_zero((n*1).toString(16).toUpperCase(),2);
+}
+
 async function session(device) {
     //console.log("session IN");
 
-    console.log("session:", device.productId);
+    //console.log("session:", device.productId);
 
     let pasoriDeviceModel = pasoriDevice[device.productId];
     let endpointOut = pasoriDeviceModel.endPointOutNum;
@@ -709,15 +732,13 @@ async function session(device) {
         console.log("RC-S300");
 
         const len = 50;
-        //endpointOut = 0;
-        //endpointIn = 0;
 
-        console.log("session_endPointOutNum:", endpointOut);
-        console.log("session_endPointInNum:", endpointIn);
+        //console.log("session_endPointOutNum:", endpointOut);
+        //console.log("session_endPointInNum:", endpointIn);
     
 
-        //await send300(device, endpointOut, [0xFF, 0x56, 0x00, 0x00]);
-        //await receive(device, endpointIn, len);
+        await send300(device, endpointOut, [0xFF, 0x56, 0x00, 0x00]);
+        await receive(device, endpointIn, len);
       
         // endtransparent
         await send300(device, endpointOut, [0xFF, 0x50, 0x00, 0x00, 0x02, 0x82, 0x00, 0x00]);
@@ -751,11 +772,16 @@ async function session(device) {
         const poling_res_f = await receive(device, endpointIn, len);
 
         if(poling_res_f.length == 46){
-          const idm = poling_res_f.slice(26,34).map(v => dec2HexString(v));
-          const idmStr = idm.join(' ');
-          let idmNum = JSON.parse(JSON.stringify(idmStr));
-          await setIdmNum(device, idmNum);
-          return;
+            let idmStr = '';
+            let idm = poling_res_f.slice(26,34).map(v => dec2HexString(v));
+            idmStr = idm.join('');
+            let idmNum = JSON.parse(JSON.stringify(idmStr));
+            await setIdmNum(device, idmNum);
+            return;
+        } else {
+    
+            await setIdmNum(device, '');
+    
         }
 
 
@@ -763,14 +789,13 @@ async function session(device) {
 
 
 
-
-
     // RC-S380
     if (device.productId === 0x06C1 || device.productId === 0x06C3) {
+
         console.log("RC-S380");
 
-        console.log("session_endPointOutNum:", endpointOut);
-        console.log("session_endPointInNum:", endpointIn);
+        //console.log("session_endPointOutNum:", endpointOut);
+        //console.log("session_endPointInNum:", endpointIn);
 
 
         await send(device, endpointOut, [0x00, 0x00, 0xff, 0x00, 0xff, 0x00]);
