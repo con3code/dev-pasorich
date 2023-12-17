@@ -1,7 +1,7 @@
 /*
 
 PaSoRich for Xcratch
-20231216 - 1.5d(004)
+20231216 - 1.5d(006)
 
 */
 
@@ -16,34 +16,59 @@ import blockIcon from './block-icon.png';
 
 // Variables
 const pasoriDevice = {
+    443 : {
+        vendorId: 0x054c,
+        productId: 0x01bb,
+        modelType: '320',
+        modelName: 'RC-S320',
+        endpointInNum: '',
+        endpointOutNum: ''
+    },
+    737 : {
+        vendorId: 0x054c,
+        productId: 0x02e1,
+        modelType: '330',
+        modelName: 'RC-S330',
+        endpointInNum: '',
+        endpointOutNum: ''
+    },
     1729 : {
         vendorId: 0x054c,
         productId: 0x06C1,
         modelType: '380S',
-        modelName: 'RC-S380/S'
+        modelName: 'RC-S380/S',
+        endpointInNum: '',
+        endpointOutNum: ''
     },
     1731 : {
         vendorId: 0x054c,
         productId: 0x06C3,
         modelType: '380P',
-        modelName: 'RC-S380/P'
+        modelName: 'RC-S380/P',
+        endpointInNum: '',
+        endpointOutNum: ''
     },
     3528 : {
         vendorId: 0x054c,
         productId: 0x0dc8,
         modelType: '300S',
-        modelName: 'RC-S300/S'
+        modelName: 'RC-S300/S',
+        endpointInNum: '',
+        endpointOutNum: ''
     },
     3529 : {
         vendorId: 0x054c,
         productId: 0x0dc9,
         modelType: '380P',
-        modelName: 'RC-S300/P'
+        modelName: 'RC-S300/P',
+        endpointInNum: '',
+        endpointOutNum: ''
     },
 }
 
 let nfcDevices = [];
 let deviceOpening = false;
+let seqNumber = 0 ;
 
 const PaSoRichVersion = 'PaSoRich 1.5d';
 
@@ -167,17 +192,7 @@ class Scratch3Pasorich {
         return new Promise((resolve, reject) => {
             deviceOpening = true;
             //console.log("openPasori:", device);
-
-            /*
-            const connectMessage = formatMessage({
-                id: 'pasorich.ConnectConnecting',
-                default: 'Connecting...',
-                description: 'ConnectConnecting'
-            });
-           
-            isConnect = connectMessage;
-            */
-                
+               
             /*
             var usbDeviceConnect = async () => {
                 const usbDevice = await navigator.usb.getDevices();
@@ -447,12 +462,36 @@ let isConnect = formatMessage({
 });
 
 
+var getEndpoint = ( argInterface, argValue ) => {
+    let retValue = false ;
+    for( const val of argInterface.alternate.endpoints ) {
+        if ( val.direction == argValue && val.type == 'bulk') {
+            console.log(val);
+            retValue = val ;
+        }
+    }
+    return retValue ;
+}
+
+
+
 async function setupDevice(device) {
+    let modelType = device.productId;
+
     console.log("setupDevice:", device);
     let confValue = device.configurations[0].configurationValue || 1;
     console.log("configurationValue:", confValue);
-    let interfaceNum = device.configurations[0].interfaces[confValue - 1].interfaceNumber || 0;	// インターフェイス番号
+    let interfaceNum = device.configurations[0].interfaces[0].interfaceNumber || 0;	// インターフェイス番号
     console.log("interfaceNumber:", interfaceNum);
+    let deviceEndpoint = getEndpoint(device.configurations[0].interfaces[0], 'in');
+    let pasoriDeviceModel = pasoriDevice[modelType];
+		pasoriDeviceModel.endPointInNum = deviceEndpoint.endpointNumber;
+        console.log("endpointInNumber:", pasoriDeviceModel.endPointInNum);
+        //console.log("endpointInNumber:", deviceEndpoint.endpointNumber);
+        deviceEndpoint = getEndpoint(device.configurations[0].interfaces[0], 'out');
+		pasoriDeviceModel.endPointOutNum = deviceEndpoint.endpointNumber;
+        console.log("endpointOutNumber:", pasoriDeviceModel.endPointOutNum);
+        //console.log("endpointOutNumber:", deviceEndpoint.endpointNumber);
 
     try {
         await device.open(); // デバイスを開く
@@ -614,14 +653,35 @@ Scratch3Pasorich.prototype.whenRead = function(args, util) {
 
 
 
-async function send(device, data) {
-    let uint8a = new Uint8Array(data);
-    await device.transferOut(2, uint8a);
+async function send300(device, endpointOut, data) {
+    let uint8data = new Uint8Array(data);
+    const dataLen = uint8data.length;
+    const SLOTNUMBER = 0x00;
+    let retVal = new Uint8Array( 10 + dataLen );
+  
+    retVal[0] = 0x6b ;            // ヘッダー作成
+    retVal[1] = 255 & dataLen ;       // length をリトルエンディアン
+    retVal[2] = dataLen >> 8 & 255 ;
+    retVal[3] = dataLen >> 16 & 255 ;
+    retVal[4] = dataLen >> 24 & 255 ;
+    retVal[5] = SLOTNUMBER ;        // タイムスロット番号
+    retVal[6] = ++seqNumber ;       // 認識番号
+  
+    0 != dataLen && retVal.set( uint8data, 10 ); // コマンド追加
+    console.log(">>>>>>>>>>");
+    console.log(Array.from(retVal).map(v => v.toString(16)));
+    await device.transferOut(endpointOut, retVal);
+    await sleep(50);
+  }
+
+async function send(device, endpointOut, data) {
+    let uint8data = new Uint8Array(data);
+    await device.transferOut(endpointOut, uint8data);
     await sleep(10);
   }
   
-  async function receive(device, len) {
-    let data = await device.transferIn(1, len);
+  async function receive(device, endpointIn, len) {
+    let data = await device.transferIn(endpointIn, len);
     await sleep(10);
     let arr = [];
     for (let i = data.data.byteOffset; i < data.data.byteLength; i++) {
@@ -634,55 +694,137 @@ async function send(device, data) {
 async function session(device) {
     //console.log("session IN");
 
+    console.log("session:", device.productId);
+
+    let pasoriDeviceModel = pasoriDevice[device.productId];
+    let endpointOut = pasoriDeviceModel.endPointOutNum;
+    //console.log("session_endPointOutNum:", pasoriDeviceModel.endPointOutNum);
+    let endpointIn = pasoriDeviceModel.endPointInNum;
+    //console.log("session_endPointInNum:", pasoriDeviceModel.endPointInNum);
 
 
-    await send(device, [0x00, 0x00, 0xff, 0x00, 0xff, 0x00]);
-    await send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x2a, 0x01, 0xff, 0x00]); //SetCommandType
-    await receive(device, 6);
-    await receive(device, 13);
-    //console.log("session IN 1");
-    await send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x06, 0x00, 0x24, 0x00]); //SwitchRF
-    await receive(device, 6);
-    await receive(device, 13);
-    //console.log("session IN 2");
-    await send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x06, 0x00, 0x24, 0x00]); //SwitchRF
-    await receive(device, 6);
-    await receive(device, 13);
-    //console.log("session IN 3");
-    await send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x06, 0x00, 0xfa, 0xd6, 0x00, 0x01, 0x01, 0x0f, 0x01, 0x18, 0x00]); //InSetRF
-    await receive(device, 6);
-    await receive(device, 13);
-    //console.log("session IN 4");
-    await send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x28, 0x00, 0xd8, 0xd6, 0x02, 0x00, 0x18, 0x01, 0x01, 0x02, 0x01, 0x03, 0x00, 0x04, 0x00, 0x05, 0x00, 0x06, 0x00, 0x07, 0x08, 0x08, 0x00, 0x09, 0x00, 0x0a, 0x00, 0x0b, 0x00, 0x0c, 0x00, 0x0e, 0x04, 0x0f, 0x00, 0x10, 0x00, 0x11, 0x00, 0x12, 0x00, 0x13, 0x06, 0x4b, 0x00]); //InSetProtocol
-    await receive(device, 6);
-    await receive(device, 13);
-    //console.log("session IN 5");
-    await send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x04, 0x00, 0xfc, 0xd6, 0x02, 0x00, 0x18, 0x10, 0x00]); //InSetProtocol
-    await receive(device, 6);
-    await receive(device, 13);
-    //console.log("session IN 6");
-    await send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x0a, 0x00, 0xf6, 0xd6, 0x04, 0x6e, 0x00, 0x06, 0x00, 0xff, 0xff, 0x01, 0x00, 0xb3, 0x00]); //InCommRF
-    await receive(device, 6);
 
-    //console.log("session Idm");
-    let idm = (await receive(device, 37)).slice(17, 25);
-    if (idm.length > 0) {
-      let idmStr = '';
-      for (let i = 0; i < idm.length; i++) {
-        if (idm[i] < 16) {
-          idmStr += '0';
-        }
-        idmStr += idm[i].toString(16);
-      }
+    // RC-S300
+    if (device.productId === 0x0dc8 || device.productId === 0x0dc9) {
+        console.log("RC-S300");
 
-        let idmNum = JSON.parse(JSON.stringify(idmStr));
-        await setIdmNum(device, idmNum);
+        const len = 50;
+        //endpointOut = 0;
+        //endpointIn = 0;
+
+        console.log("session_endPointOutNum:", endpointOut);
+        console.log("session_endPointInNum:", endpointIn);
+    
+
+        //await send300(device, endpointOut, [0xFF, 0x56, 0x00, 0x00]);
+        //await receive(device, endpointIn, len);
       
-    } else {
+        // endtransparent
+        await send300(device, endpointOut, [0xFF, 0x50, 0x00, 0x00, 0x02, 0x82, 0x00, 0x00]);
+        await receive(device, endpointIn, len);
+        
+        // startransparent
+        await send300(device, endpointOut, [0xFF, 0x50, 0x00, 0x00, 0x02, 0x81, 0x00, 0x00]);
+        await receive(device, endpointIn, len);
+      
+        // rf off
+        await send300(device, endpointOut, [0xFF, 0x50, 0x00, 0x00, 0x02, 0x83, 0x00, 0x00]);
+        await receive(device, endpointIn, len);
+      
+        // rf on
+        await send300(device, endpointOut, [0xFF, 0x50, 0x00, 0x00, 0x02, 0x84, 0x00, 0x00]);
+        await receive(device, endpointIn, len);
+      
+        // SwitchProtocolTypeF
+        await send300(device, endpointOut, [0xff, 0x50, 0x00, 0x02, 0x04, 0x8f, 0x02, 0x03, 0x00, 0x00]);
+        await receive(device, endpointIn, len);
+      
+        // ferica poling
+        await send300(device, endpointOut, [0xFF, 0x50, 0x00, 0x01, 0x00, 0x00, 0x11, 0x5F, 0x46, 0x04, 0xA0, 0x86, 0x01, 0x00, 0x95, 0x82, 0x00, 0x06, 0x06, 0x00, 0xFF, 0xFF, 0x01, 0x00, 0x00, 0x00, 0x00]);
+        // poling検出時 *がIDm
+        // ['83', '24', '00', '00', '00', '00', '06', '02', '00', '00']
+        // ['C0', '03', '00', '90', '00', '92', '01', '00', '96', '02', '00', '00', '97', '14', '14', '01', '**', '**', '**', '**', '**', '**', '**', '**', '05', '31', '43', '45', '46', '82', 'B7', 'FF', '00', '03', '90', '00']
+        // poling未検出時
+        // ['83', '07', '00', '00', '00', '00', '98', '02', '00', '00']
+        // ['C0', '03', '02', '64', '01', '90', '00']
 
-        await setIdmNum(device, '');
+        const poling_res_f = await receive(device, endpointIn, len);
+
+        if(poling_res_f.length == 46){
+          const idm = poling_res_f.slice(26,34).map(v => dec2HexString(v));
+          const idmStr = idm.join(' ');
+          let idmNum = JSON.parse(JSON.stringify(idmStr));
+          await setIdmNum(device, idmNum);
+          return;
+        }
+
 
     }
+
+
+
+
+
+    // RC-S380
+    if (device.productId === 0x06C1 || device.productId === 0x06C3) {
+        console.log("RC-S380");
+
+        console.log("session_endPointOutNum:", endpointOut);
+        console.log("session_endPointInNum:", endpointIn);
+
+
+        await send(device, endpointOut, [0x00, 0x00, 0xff, 0x00, 0xff, 0x00]);
+        await send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x2a, 0x01, 0xff, 0x00]); //SetCommandType
+        await receive(device, endpointIn, 6);
+        await receive(device, endpointIn, 13);
+        //console.log("session IN 1");
+        await send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x06, 0x00, 0x24, 0x00]); //SwitchRF
+        await receive(device, endpointIn, 6);
+        await receive(device, endpointIn, 13);
+        //console.log("session IN 2");
+        await send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x06, 0x00, 0x24, 0x00]); //SwitchRF
+        await receive(device, endpointIn, 6);
+        await receive(device, endpointIn, 13);
+        //console.log("session IN 3");
+        await send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x06, 0x00, 0xfa, 0xd6, 0x00, 0x01, 0x01, 0x0f, 0x01, 0x18, 0x00]); //InSetRF
+        await receive(device, endpointIn, 6);
+        await receive(device, endpointIn, 13);
+        //console.log("session IN 4");
+        await send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x28, 0x00, 0xd8, 0xd6, 0x02, 0x00, 0x18, 0x01, 0x01, 0x02, 0x01, 0x03, 0x00, 0x04, 0x00, 0x05, 0x00, 0x06, 0x00, 0x07, 0x08, 0x08, 0x00, 0x09, 0x00, 0x0a, 0x00, 0x0b, 0x00, 0x0c, 0x00, 0x0e, 0x04, 0x0f, 0x00, 0x10, 0x00, 0x11, 0x00, 0x12, 0x00, 0x13, 0x06, 0x4b, 0x00]); //InSetProtocol
+        await receive(device, endpointIn, 6);
+        await receive(device, endpointIn, 13);
+        //console.log("session IN 5");
+        await send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x04, 0x00, 0xfc, 0xd6, 0x02, 0x00, 0x18, 0x10, 0x00]); //InSetProtocol
+        await receive(device, endpointIn, 6);
+        await receive(device, endpointIn, 13);
+        //console.log("session IN 6");
+        await send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x0a, 0x00, 0xf6, 0xd6, 0x04, 0x6e, 0x00, 0x06, 0x00, 0xff, 0xff, 0x01, 0x00, 0xb3, 0x00]); //InCommRF
+        await receive(device, endpointIn, 6);
+    
+        //console.log("session Idm");
+        let idm = (await receive(device, endpointIn, 37)).slice(17, 25);
+
+        if (idm.length > 0) {
+          let idmStr = '';
+          for (let i = 0; i < idm.length; i++) {
+            if (idm[i] < 16) {
+              idmStr += '0';
+            }
+            idmStr += idm[i].toString(16);
+          }
+    
+            let idmNum = JSON.parse(JSON.stringify(idmStr));
+            await setIdmNum(device, idmNum);
+          
+        } else {
+    
+            await setIdmNum(device, '');
+    
+        }
+    
+    }
+
+
 
 /*
         if (!crypto || !crypto.subtle) {
@@ -744,9 +886,12 @@ function addNfcDevice(device) {
 
 // デバイスを取得する関数（番号で取得）
 function getNfcDeviceByNumber(deviceNumber) {
-    // deviceNumber は配列のインデックスとして機能
-    return nfcDevices[deviceNumber - 1].device;
+    if (deviceNumber > 0 && deviceNumber <= nfcDevices.length) {
+        // deviceNumber は配列のインデックスとして機能
+        return nfcDevices[deviceNumber - 1].device;
+    }
 }
+ 
 
 // デバイスを削除する関数（番号で削除）
 function removeNfcDeviceByNumber(deviceNumber) {

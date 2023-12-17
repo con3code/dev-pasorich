@@ -618,8 +618,64 @@ var translations = {
 
 var img = "data:image/png;base64,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";
 
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+
+// Variables
+var pasoriDevice = {
+  443: {
+    vendorId: 0x054c,
+    productId: 0x01bb,
+    modelType: '320',
+    modelName: 'RC-S320',
+    endpointInNum: '',
+    endpointOutNum: ''
+  },
+  737: {
+    vendorId: 0x054c,
+    productId: 0x02e1,
+    modelType: '330',
+    modelName: 'RC-S330',
+    endpointInNum: '',
+    endpointOutNum: ''
+  },
+  1729: {
+    vendorId: 0x054c,
+    productId: 0x06C1,
+    modelType: '380S',
+    modelName: 'RC-S380/S',
+    endpointInNum: '',
+    endpointOutNum: ''
+  },
+  1731: {
+    vendorId: 0x054c,
+    productId: 0x06C3,
+    modelType: '380P',
+    modelName: 'RC-S380/P',
+    endpointInNum: '',
+    endpointOutNum: ''
+  },
+  3528: {
+    vendorId: 0x054c,
+    productId: 0x0dc8,
+    modelType: '300S',
+    modelName: 'RC-S300/S',
+    endpointInNum: '',
+    endpointOutNum: ''
+  },
+  3529: {
+    vendorId: 0x054c,
+    productId: 0x0dc9,
+    modelType: '380P',
+    modelName: 'RC-S300/P',
+    endpointInNum: '',
+    endpointOutNum: ''
+  }
+};
 var nfcDevices = [];
 var deviceOpening = false;
+var seqNumber = 0;
 var PaSoRichVersion = 'PaSoRich 1.5d';
 
 /**
@@ -699,15 +755,6 @@ var Scratch3Pasorich = /*#__PURE__*/function () {
       return new Promise(function (resolve, reject) {
         deviceOpening = true;
         //console.log("openPasori:", device);
-
-        /*
-        const connectMessage = formatMessage({
-            id: 'pasorich.ConnectConnecting',
-            default: 'Connecting...',
-            description: 'ConnectConnecting'
-        });
-                    isConnect = connectMessage;
-        */
 
         /*
         var usbDeviceConnect = async () => {
@@ -1075,43 +1122,72 @@ var isConnect = formatMessage({
   default: 'Push to Connect.',
   description: 'push2Connect'
 });
+var getEndpoint = function getEndpoint(argInterface, argValue) {
+  var retValue = false;
+  var _iterator = _createForOfIteratorHelper(argInterface.alternate.endpoints),
+    _step;
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var val = _step.value;
+      if (val.direction == argValue && val.type == 'bulk') {
+        console.log(val);
+        retValue = val;
+      }
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+  return retValue;
+};
 function setupDevice(_x4) {
   return _setupDevice.apply(this, arguments);
 } // キューインスタンスを作成
 function _setupDevice() {
   _setupDevice = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee5(device) {
-    var confValue, interfaceNum;
+    var modelType, confValue, interfaceNum, deviceEndpoint, pasoriDeviceModel;
     return regenerator.wrap(function _callee5$(_context5) {
       while (1) switch (_context5.prev = _context5.next) {
         case 0:
+          modelType = device.productId;
           console.log("setupDevice:", device);
           confValue = device.configurations[0].configurationValue || 1;
           console.log("configurationValue:", confValue);
-          interfaceNum = device.configurations[0].interfaces[confValue - 1].interfaceNumber || 0; // インターフェイス番号
+          interfaceNum = device.configurations[0].interfaces[0].interfaceNumber || 0; // インターフェイス番号
           console.log("interfaceNumber:", interfaceNum);
-          _context5.prev = 5;
-          _context5.next = 8;
+          deviceEndpoint = getEndpoint(device.configurations[0].interfaces[0], 'in');
+          pasoriDeviceModel = pasoriDevice[modelType];
+          pasoriDeviceModel.endPointInNum = deviceEndpoint.endpointNumber;
+          console.log("endpointInNumber:", pasoriDeviceModel.endPointInNum);
+          //console.log("endpointInNumber:", deviceEndpoint.endpointNumber);
+          deviceEndpoint = getEndpoint(device.configurations[0].interfaces[0], 'out');
+          pasoriDeviceModel.endPointOutNum = deviceEndpoint.endpointNumber;
+          console.log("endpointOutNumber:", pasoriDeviceModel.endPointOutNum);
+          //console.log("endpointOutNumber:", deviceEndpoint.endpointNumber);
+          _context5.prev = 13;
+          _context5.next = 16;
           return device.open();
-        case 8:
-          _context5.next = 10;
+        case 16:
+          _context5.next = 18;
           return device.selectConfiguration(confValue);
-        case 10:
-          _context5.next = 12;
-          return device.claimInterface(interfaceNum);
-        case 12:
-          _context5.next = 17;
-          break;
-        case 14:
-          _context5.prev = 14;
-          _context5.t0 = _context5["catch"](5);
-          console.error('This device is currently in use or down:', _context5.t0);
-        case 17:
-          return _context5.abrupt("return", device);
         case 18:
+          _context5.next = 20;
+          return device.claimInterface(interfaceNum);
+        case 20:
+          _context5.next = 25;
+          break;
+        case 22:
+          _context5.prev = 22;
+          _context5.t0 = _context5["catch"](13);
+          console.error('This device is currently in use or down:', _context5.t0);
+        case 25:
+          return _context5.abrupt("return", device);
+        case 26:
         case "end":
           return _context5.stop();
       }
-    }, _callee5, null, [[5, 14]]);
+    }, _callee5, null, [[13, 22]]);
   }));
   return _setupDevice.apply(this, arguments);
 }
@@ -1243,22 +1319,38 @@ Scratch3Pasorich.prototype.whenRead = function (args, util) {
   //console.log("whenRead:", deviceNumber);
   return this.whenReadCalled(blockId, deviceNumber);
 };
-function send(_x5, _x6) {
+function send300(_x5, _x6, _x7) {
   return _send.apply(this, arguments);
 }
 function _send() {
-  _send = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee6(device, data) {
-    var uint8a;
+  _send = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee6(device, endpointOut, data) {
+    var uint8data, dataLen, SLOTNUMBER, retVal;
     return regenerator.wrap(function _callee6$(_context6) {
       while (1) switch (_context6.prev = _context6.next) {
         case 0:
-          uint8a = new Uint8Array(data);
-          _context6.next = 3;
-          return device.transferOut(2, uint8a);
-        case 3:
-          _context6.next = 5;
-          return sleep(10);
-        case 5:
+          uint8data = new Uint8Array(data);
+          dataLen = uint8data.length;
+          SLOTNUMBER = 0x00;
+          retVal = new Uint8Array(10 + dataLen);
+          retVal[0] = 0x6b; // ヘッダー作成
+          retVal[1] = 255 & dataLen; // length をリトルエンディアン
+          retVal[2] = dataLen >> 8 & 255;
+          retVal[3] = dataLen >> 16 & 255;
+          retVal[4] = dataLen >> 24 & 255;
+          retVal[5] = SLOTNUMBER; // タイムスロット番号
+          retVal[6] = ++seqNumber; // 認識番号
+
+          0 != dataLen && retVal.set(uint8data, 10); // コマンド追加
+          console.log(">>>>>>>>>>");
+          console.log(Array.from(retVal).map(function (v) {
+            return v.toString(16);
+          }));
+          _context6.next = 16;
+          return device.transferOut(endpointOut, retVal);
+        case 16:
+          _context6.next = 18;
+          return sleep(50);
+        case 18:
         case "end":
           return _context6.stop();
       }
@@ -1266,136 +1358,238 @@ function _send() {
   }));
   return _send.apply(this, arguments);
 }
-function receive(_x7, _x8) {
-  return _receive.apply(this, arguments);
+function send(_x8, _x9, _x10) {
+  return _send2.apply(this, arguments);
 }
-function _receive() {
-  _receive = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee7(device, len) {
-    var data, arr, i;
+function _send2() {
+  _send2 = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee7(device, endpointOut, data) {
+    var uint8data;
     return regenerator.wrap(function _callee7$(_context7) {
       while (1) switch (_context7.prev = _context7.next) {
         case 0:
-          _context7.next = 2;
-          return device.transferIn(1, len);
-        case 2:
-          data = _context7.sent;
+          uint8data = new Uint8Array(data);
+          _context7.next = 3;
+          return device.transferOut(endpointOut, uint8data);
+        case 3:
           _context7.next = 5;
+          return sleep(10);
+        case 5:
+        case "end":
+          return _context7.stop();
+      }
+    }, _callee7);
+  }));
+  return _send2.apply(this, arguments);
+}
+function receive(_x11, _x12, _x13) {
+  return _receive.apply(this, arguments);
+}
+function _receive() {
+  _receive = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee8(device, endpointIn, len) {
+    var data, arr, i;
+    return regenerator.wrap(function _callee8$(_context8) {
+      while (1) switch (_context8.prev = _context8.next) {
+        case 0:
+          _context8.next = 2;
+          return device.transferIn(endpointIn, len);
+        case 2:
+          data = _context8.sent;
+          _context8.next = 5;
           return sleep(10);
         case 5:
           arr = [];
           for (i = data.data.byteOffset; i < data.data.byteLength; i++) {
             arr.push(data.data.getUint8(i));
           }
-          return _context7.abrupt("return", arr);
+          return _context8.abrupt("return", arr);
         case 8:
-        case "end":
-          return _context7.stop();
-      }
-    }, _callee7);
-  }));
-  return _receive.apply(this, arguments);
-}
-function session(_x9) {
-  return _session.apply(this, arguments);
-} // 特定のデバイスのidmNumを取得する関数
-function _session() {
-  _session = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee8(device) {
-    var idm, idmStr, i, idmNum;
-    return regenerator.wrap(function _callee8$(_context8) {
-      while (1) switch (_context8.prev = _context8.next) {
-        case 0:
-          _context8.next = 2;
-          return send(device, [0x00, 0x00, 0xff, 0x00, 0xff, 0x00]);
-        case 2:
-          _context8.next = 4;
-          return send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x2a, 0x01, 0xff, 0x00]);
-        case 4:
-          _context8.next = 6;
-          return receive(device, 6);
-        case 6:
-          _context8.next = 8;
-          return receive(device, 13);
-        case 8:
-          _context8.next = 10;
-          return send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x06, 0x00, 0x24, 0x00]);
-        case 10:
-          _context8.next = 12;
-          return receive(device, 6);
-        case 12:
-          _context8.next = 14;
-          return receive(device, 13);
-        case 14:
-          _context8.next = 16;
-          return send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x06, 0x00, 0x24, 0x00]);
-        case 16:
-          _context8.next = 18;
-          return receive(device, 6);
-        case 18:
-          _context8.next = 20;
-          return receive(device, 13);
-        case 20:
-          _context8.next = 22;
-          return send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x06, 0x00, 0xfa, 0xd6, 0x00, 0x01, 0x01, 0x0f, 0x01, 0x18, 0x00]);
-        case 22:
-          _context8.next = 24;
-          return receive(device, 6);
-        case 24:
-          _context8.next = 26;
-          return receive(device, 13);
-        case 26:
-          _context8.next = 28;
-          return send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x28, 0x00, 0xd8, 0xd6, 0x02, 0x00, 0x18, 0x01, 0x01, 0x02, 0x01, 0x03, 0x00, 0x04, 0x00, 0x05, 0x00, 0x06, 0x00, 0x07, 0x08, 0x08, 0x00, 0x09, 0x00, 0x0a, 0x00, 0x0b, 0x00, 0x0c, 0x00, 0x0e, 0x04, 0x0f, 0x00, 0x10, 0x00, 0x11, 0x00, 0x12, 0x00, 0x13, 0x06, 0x4b, 0x00]);
-        case 28:
-          _context8.next = 30;
-          return receive(device, 6);
-        case 30:
-          _context8.next = 32;
-          return receive(device, 13);
-        case 32:
-          _context8.next = 34;
-          return send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x04, 0x00, 0xfc, 0xd6, 0x02, 0x00, 0x18, 0x10, 0x00]);
-        case 34:
-          _context8.next = 36;
-          return receive(device, 6);
-        case 36:
-          _context8.next = 38;
-          return receive(device, 13);
-        case 38:
-          _context8.next = 40;
-          return send(device, [0x00, 0x00, 0xff, 0xff, 0xff, 0x0a, 0x00, 0xf6, 0xd6, 0x04, 0x6e, 0x00, 0x06, 0x00, 0xff, 0xff, 0x01, 0x00, 0xb3, 0x00]);
-        case 40:
-          _context8.next = 42;
-          return receive(device, 6);
-        case 42:
-          _context8.next = 44;
-          return receive(device, 37);
-        case 44:
-          idm = _context8.sent.slice(17, 25);
-          if (!(idm.length > 0)) {
-            _context8.next = 53;
-            break;
-          }
-          idmStr = '';
-          for (i = 0; i < idm.length; i++) {
-            if (idm[i] < 16) {
-              idmStr += '0';
-            }
-            idmStr += idm[i].toString(16);
-          }
-          idmNum = JSON.parse(JSON.stringify(idmStr));
-          _context8.next = 51;
-          return setIdmNum(device, idmNum);
-        case 51:
-          _context8.next = 55;
-          break;
-        case 53:
-          _context8.next = 55;
-          return setIdmNum(device, '');
-        case 55:
         case "end":
           return _context8.stop();
       }
     }, _callee8);
+  }));
+  return _receive.apply(this, arguments);
+}
+function session(_x14) {
+  return _session.apply(this, arguments);
+} // 特定のデバイスのidmNumを取得する関数
+function _session() {
+  _session = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee9(device) {
+    var pasoriDeviceModel, endpointOut, endpointIn, len, poling_res_f, idm, idmStr, idmNum, _idm, _idmStr, i, _idmNum;
+    return regenerator.wrap(function _callee9$(_context9) {
+      while (1) switch (_context9.prev = _context9.next) {
+        case 0:
+          //console.log("session IN");
+
+          console.log("session:", device.productId);
+          pasoriDeviceModel = pasoriDevice[device.productId];
+          endpointOut = pasoriDeviceModel.endPointOutNum; //console.log("session_endPointOutNum:", pasoriDeviceModel.endPointOutNum);
+          endpointIn = pasoriDeviceModel.endPointInNum; //console.log("session_endPointInNum:", pasoriDeviceModel.endPointInNum);
+          // RC-S300
+          if (!(device.productId === 0x0dc8 || device.productId === 0x0dc9)) {
+            _context9.next = 41;
+            break;
+          }
+          console.log("RC-S300");
+          len = 50; //endpointOut = 0;
+          //endpointIn = 0;
+          console.log("session_endPointOutNum:", endpointOut);
+          console.log("session_endPointInNum:", endpointIn);
+
+          //await send300(device, endpointOut, [0xFF, 0x56, 0x00, 0x00]);
+          //await receive(device, endpointIn, len);
+
+          // endtransparent
+          _context9.next = 11;
+          return send300(device, endpointOut, [0xFF, 0x50, 0x00, 0x00, 0x02, 0x82, 0x00, 0x00]);
+        case 11:
+          _context9.next = 13;
+          return receive(device, endpointIn, len);
+        case 13:
+          _context9.next = 15;
+          return send300(device, endpointOut, [0xFF, 0x50, 0x00, 0x00, 0x02, 0x81, 0x00, 0x00]);
+        case 15:
+          _context9.next = 17;
+          return receive(device, endpointIn, len);
+        case 17:
+          _context9.next = 19;
+          return send300(device, endpointOut, [0xFF, 0x50, 0x00, 0x00, 0x02, 0x83, 0x00, 0x00]);
+        case 19:
+          _context9.next = 21;
+          return receive(device, endpointIn, len);
+        case 21:
+          _context9.next = 23;
+          return send300(device, endpointOut, [0xFF, 0x50, 0x00, 0x00, 0x02, 0x84, 0x00, 0x00]);
+        case 23:
+          _context9.next = 25;
+          return receive(device, endpointIn, len);
+        case 25:
+          _context9.next = 27;
+          return send300(device, endpointOut, [0xff, 0x50, 0x00, 0x02, 0x04, 0x8f, 0x02, 0x03, 0x00, 0x00]);
+        case 27:
+          _context9.next = 29;
+          return receive(device, endpointIn, len);
+        case 29:
+          _context9.next = 31;
+          return send300(device, endpointOut, [0xFF, 0x50, 0x00, 0x01, 0x00, 0x00, 0x11, 0x5F, 0x46, 0x04, 0xA0, 0x86, 0x01, 0x00, 0x95, 0x82, 0x00, 0x06, 0x06, 0x00, 0xFF, 0xFF, 0x01, 0x00, 0x00, 0x00, 0x00]);
+        case 31:
+          _context9.next = 33;
+          return receive(device, endpointIn, len);
+        case 33:
+          poling_res_f = _context9.sent;
+          if (!(poling_res_f.length == 46)) {
+            _context9.next = 41;
+            break;
+          }
+          idm = poling_res_f.slice(26, 34).map(function (v) {
+            return dec2HexString(v);
+          });
+          idmStr = idm.join(' ');
+          idmNum = JSON.parse(JSON.stringify(idmStr));
+          _context9.next = 40;
+          return setIdmNum(device, idmNum);
+        case 40:
+          return _context9.abrupt("return");
+        case 41:
+          if (!(device.productId === 0x06C1 || device.productId === 0x06C3)) {
+            _context9.next = 100;
+            break;
+          }
+          console.log("RC-S380");
+          console.log("session_endPointOutNum:", endpointOut);
+          console.log("session_endPointInNum:", endpointIn);
+          _context9.next = 47;
+          return send(device, endpointOut, [0x00, 0x00, 0xff, 0x00, 0xff, 0x00]);
+        case 47:
+          _context9.next = 49;
+          return send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x2a, 0x01, 0xff, 0x00]);
+        case 49:
+          _context9.next = 51;
+          return receive(device, endpointIn, 6);
+        case 51:
+          _context9.next = 53;
+          return receive(device, endpointIn, 13);
+        case 53:
+          _context9.next = 55;
+          return send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x06, 0x00, 0x24, 0x00]);
+        case 55:
+          _context9.next = 57;
+          return receive(device, endpointIn, 6);
+        case 57:
+          _context9.next = 59;
+          return receive(device, endpointIn, 13);
+        case 59:
+          _context9.next = 61;
+          return send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x06, 0x00, 0x24, 0x00]);
+        case 61:
+          _context9.next = 63;
+          return receive(device, endpointIn, 6);
+        case 63:
+          _context9.next = 65;
+          return receive(device, endpointIn, 13);
+        case 65:
+          _context9.next = 67;
+          return send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x06, 0x00, 0xfa, 0xd6, 0x00, 0x01, 0x01, 0x0f, 0x01, 0x18, 0x00]);
+        case 67:
+          _context9.next = 69;
+          return receive(device, endpointIn, 6);
+        case 69:
+          _context9.next = 71;
+          return receive(device, endpointIn, 13);
+        case 71:
+          _context9.next = 73;
+          return send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x28, 0x00, 0xd8, 0xd6, 0x02, 0x00, 0x18, 0x01, 0x01, 0x02, 0x01, 0x03, 0x00, 0x04, 0x00, 0x05, 0x00, 0x06, 0x00, 0x07, 0x08, 0x08, 0x00, 0x09, 0x00, 0x0a, 0x00, 0x0b, 0x00, 0x0c, 0x00, 0x0e, 0x04, 0x0f, 0x00, 0x10, 0x00, 0x11, 0x00, 0x12, 0x00, 0x13, 0x06, 0x4b, 0x00]);
+        case 73:
+          _context9.next = 75;
+          return receive(device, endpointIn, 6);
+        case 75:
+          _context9.next = 77;
+          return receive(device, endpointIn, 13);
+        case 77:
+          _context9.next = 79;
+          return send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x04, 0x00, 0xfc, 0xd6, 0x02, 0x00, 0x18, 0x10, 0x00]);
+        case 79:
+          _context9.next = 81;
+          return receive(device, endpointIn, 6);
+        case 81:
+          _context9.next = 83;
+          return receive(device, endpointIn, 13);
+        case 83:
+          _context9.next = 85;
+          return send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x0a, 0x00, 0xf6, 0xd6, 0x04, 0x6e, 0x00, 0x06, 0x00, 0xff, 0xff, 0x01, 0x00, 0xb3, 0x00]);
+        case 85:
+          _context9.next = 87;
+          return receive(device, endpointIn, 6);
+        case 87:
+          _context9.next = 89;
+          return receive(device, endpointIn, 37);
+        case 89:
+          _idm = _context9.sent.slice(17, 25);
+          if (!(_idm.length > 0)) {
+            _context9.next = 98;
+            break;
+          }
+          _idmStr = '';
+          for (i = 0; i < _idm.length; i++) {
+            if (_idm[i] < 16) {
+              _idmStr += '0';
+            }
+            _idmStr += _idm[i].toString(16);
+          }
+          _idmNum = JSON.parse(JSON.stringify(_idmStr));
+          _context9.next = 96;
+          return setIdmNum(device, _idmNum);
+        case 96:
+          _context9.next = 100;
+          break;
+        case 98:
+          _context9.next = 100;
+          return setIdmNum(device, '');
+        case 100:
+        case "end":
+          return _context9.stop();
+      }
+    }, _callee9);
   }));
   return _session.apply(this, arguments);
 }
@@ -1442,8 +1636,10 @@ function addNfcDevice(device) {
 
 // デバイスを取得する関数（番号で取得）
 function getNfcDeviceByNumber(deviceNumber) {
-  // deviceNumber は配列のインデックスとして機能
-  return nfcDevices[deviceNumber - 1].device;
+  if (deviceNumber > 0 && deviceNumber <= nfcDevices.length) {
+    // deviceNumber は配列のインデックスとして機能
+    return nfcDevices[deviceNumber - 1].device;
+  }
 }
 function sleep(msec) {
   return new Promise(function (resolve) {
