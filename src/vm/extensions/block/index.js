@@ -1,7 +1,7 @@
 /*
 
 PaSoRich for Xcratch
-20231218 - 1.5d(007)
+20231219 - 1.5d(008)
 
 */
 
@@ -10,7 +10,7 @@ import BlockType from '../../extension-support/block-type';
 import ArgumentType from '../../extension-support/argument-type';
 import Cast from '../../util/cast';
 import translations from './translations.json';
-import blockIcon from './block-icon.png';
+import blockIcon from './pasorich_icon.png';
 
 
 
@@ -116,7 +116,7 @@ class Scratch3Pasorich {
             id: 'pasorich.name',
             default: 'PaSoRich',
             description: 'name of the extension'
-        });
+        }).toString();
     }
 
     /**
@@ -313,7 +313,7 @@ class Scratch3Pasorich {
                         default: 'Connect',
                         description: 'openPasori'
                     }),
-                    blockType: BlockType.REPORTER
+                    blockType: BlockType.COMMAND
                 },
                 '---',
                 {

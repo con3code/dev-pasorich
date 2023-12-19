@@ -4,7 +4,6 @@
   },
   "ja": {
     "pasorich.name": "パソリッチ",
-    "pasorich.PaSoRich": "パソリッチ",
     "pasorich.push2Connect": "押して接続",
     "pasorich.Connect": "接続",
     "pasorich.readPasori": "[DEVICE_NUMBER]番の読み取り",
@@ -24,7 +23,6 @@
   },
   "ja-Hira": {
     "pasorich.name": "ぱそりっち",
-    "pasorich.PaSoRich": "ぱそりっち",
     "pasorich.push2Connect": "おしてせつぞく",
     "pasorich.Connect": "せつぞく",
     "pasorich.readPasori": "[DEVICE_NUMBER]ばんのよみとり",
