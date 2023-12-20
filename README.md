@@ -1,7 +1,7 @@
 # dev PaSoRich 2.0
 An example extension for [Xcratch](https://xcratch.github.io/)
 
-This extension read SmartCard(Felica)'s IDm with PaSoRi.
+This extension read SmartCard(Felica)'s IDm with PaSoRi(RC-S380/RC-S300).
 
 
 ## ✨ What You Can Do With This Extension
