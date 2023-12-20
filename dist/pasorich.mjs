@@ -3,19 +3,19 @@ var img$2 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAlgAAAF0CAIAAABwgtBbA
 var img$1 = "data:image/png;base64,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";
 
 var en$1 = {
-	"pasorich.entry.name": "PaSoRich 1.0d",
-	"pasorich.entry.description": "Description of this extension"
+	"pasorich.entry.name": "PaSoRich 2.0d",
+	"pasorich.entry.description": "Read SmartCard IDm."
 };
 var ja$1 = {
-	"pasorich.entry.name": "パソリッチ 1.0d",
-	"pasorich.entry.description": "拡張機能の説明"
+	"pasorich.entry.name": "パソリッチ 2.0d",
+	"pasorich.entry.description": "ICカードのIDmを読み取る。"
 };
 var translations$1 = {
 	en: en$1,
 	ja: ja$1,
 	"ja-Hira": {
-	"pasorich.entry.name": "ぱそりっち 1.0d",
-	"pasorich.entry.description": "かくちょうきのうのせつめい"
+	"pasorich.entry.name": "ぱそりっち 2.0d",
+	"pasorich.entry.description": "ICかーどのばんごうをよみとる。"
 }
 };
 
@@ -569,7 +569,23 @@ var ArgumentType = {
 var argumentType = ArgumentType;
 
 var en = {
-	"pasorich.name": "PaSoRich"
+	"pasorich.name": "PaSoRich",
+	"pasorich.push2Connect": "Push to Connect.",
+	"pasorich.Connect": "Connect",
+	"pasorich.readPasori": "read #[DEVICE_NUMBER]reader",
+	"pasorich.getIdm": "IDm of #[DEVICE_NUMBER]",
+	"pasorich.getHashedIdm": "HexIDm",
+	"pasorich.resetIdm": "reset IDm",
+	"pasorich.resetDevice": "reset Device",
+	"pasorich.whenRead": "when read #[DEVICE_NUMBER]reader",
+	"pasorich.getReadingFlag": "reading",
+	"pasorich.getWaitingFlag": "waiting",
+	"pasorich.readingDone": "reading done",
+	"pasorich.ConnectReading": "reading...",
+	"pasorich.ConnectConnected": "connected...",
+	"pasorich.ConnectConnecting": "connecting...",
+	"pasorich.ConnectSuccess": "connected...",
+	"pasorich.ConnectFailure": "connection failed..."
 };
 var ja = {
 	"pasorich.name": "パソリッチ",
@@ -619,6 +635,7 @@ var img = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAA
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+//import Cast from '../../util/cast';
 
 // Variables
 var pasoriDevice = {
@@ -674,7 +691,7 @@ var pasoriDevice = {
 var nfcDevices = [];
 var deviceOpening = false;
 var seqNumber = 0;
-var PaSoRichVersion = 'PaSoRich 1.5d';
+var PaSoRichVersion = 'PaSoRich 2.0d';
 
 /**
  * Formatter which is used for translation.
@@ -735,7 +752,7 @@ var Scratch3Pasorich = /*#__PURE__*/function () {
     value: function openPasori() {
       var _this = this;
       if (deviceOpening) {
-        return;
+        deviceWaiter(1);
       }
       if (nfcDevices.length > 0) {
         isConnect = formatMessage({
@@ -753,13 +770,6 @@ var Scratch3Pasorich = /*#__PURE__*/function () {
       return new Promise(function (resolve, reject) {
         deviceOpening = true;
         //console.log("openPasori:", device);
-
-        /*
-        var usbDeviceConnect = async () => {
-            const usbDevice = await navigator.usb.getDevices();
-        }
-         usbDeviceConnect();
-        */
 
         // 新しいデバイスをリクエストして配列に追加
         navigator.usb.requestDevice({
@@ -794,7 +804,7 @@ var Scratch3Pasorich = /*#__PURE__*/function () {
         });
         _this.getDeviceNumberMenuItems();
         resolve(isConnect);
-      });
+      }).then(function () {});
     }
 
     /*
@@ -922,7 +932,7 @@ var Scratch3Pasorich = /*#__PURE__*/function () {
           text: formatMessage({
             id: 'pasorich.getIdm',
             default: 'IDm of #[DEVICE_NUMBER]',
-            description: 'getIdm'
+            description: 'getIDm'
           }),
           blockType: blockType.REPORTER,
           arguments: {
@@ -1159,7 +1169,6 @@ function _setupDevice() {
             deviceInterface = device.configuration.interfaces.filter(function (v) {
               return v.alternate.interfaceClass == 255;
             })[0]; // インターフェイス番号
-            //let interfaceNum = device.configurations[0].interfaces[0].interfaceNumber || 0;	// インターフェイス番号
             pasoriDeviceModel.endPointInNum = deviceInterface.alternate.endpoints.filter(function (e) {
               return e.direction == 'in';
             })[0].endpointNumber;
@@ -1288,7 +1297,7 @@ Scratch3Pasorich.prototype.readPasoriTask = function (args) {
           reject('Invalid device');
         }
       }).catch(function (error) {
-        deviceOpening = false;
+        //deviceOpening = false;
         reject(error);
       });
       _this4.getDeviceNumberMenuItems();
@@ -1301,9 +1310,11 @@ Scratch3Pasorich.prototype.readPasoriTask = function (args) {
 // readPasori関数でpasoriReadCallbackを呼び出し
 Scratch3Pasorich.prototype.readPasori = function (args) {
   var _this5 = this;
+  if (args.DEVICE_NUMBER <= 0 && args.DEVICE_NUMBER > nfcDevices.length + 1) {
+    return;
+  }
   return readPasoriQueue.enqueue(function () {
     //console.log("readPasori:", args.DEVICE_NUMBER);
-    //this.pasoriReadCallback(args.DEVICE_NUMBER);
     return _this5.readPasoriTask(args);
   });
 };
@@ -1347,30 +1358,27 @@ function send300(_x5, _x6, _x7) {
 }
 function _send() {
   _send = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee6(device, endpointOut, data) {
-    var uint8data, dataLen, SLOTNUMBER, retVal;
+    var uint8data, dataLength, SLOTNUMBER, reqPckt;
     return regenerator.wrap(function _callee6$(_context6) {
       while (1) switch (_context6.prev = _context6.next) {
         case 0:
           uint8data = new Uint8Array(data);
-          dataLen = uint8data.length;
+          dataLength = uint8data.length;
           SLOTNUMBER = 0x00;
-          retVal = new Uint8Array(10 + dataLen);
-          retVal[0] = 0x6b; // ヘッダー作成
-          retVal[1] = 255 & dataLen; // length をリトルエンディアン
-          retVal[2] = dataLen >> 8 & 255;
-          retVal[3] = dataLen >> 16 & 255;
-          retVal[4] = dataLen >> 24 & 255;
-          retVal[5] = SLOTNUMBER; // タイムスロット番号
-          retVal[6] = ++seqNumber; // 認識番号
-
-          0 != dataLen && retVal.set(uint8data, 10); // コマンド追加
-          //console.log(">>>>>>>>>>");
-          //console.log(Array.from(retVal).map(v => v.toString(16)));
+          reqPckt = new Uint8Array(10 + dataLength);
+          reqPckt[0] = 0x6b;
+          reqPckt[1] = 255 & dataLength;
+          reqPckt[2] = dataLength >> 8 & 255;
+          reqPckt[3] = dataLength >> 16 & 255;
+          reqPckt[4] = dataLength >> 24 & 255;
+          reqPckt[5] = SLOTNUMBER;
+          reqPckt[6] = ++seqNumber;
+          0 != dataLength && reqPckt.set(uint8data, 10);
           _context6.next = 14;
-          return device.transferOut(endpointOut, retVal);
+          return device.transferOut(endpointOut, reqPckt);
         case 14:
           _context6.next = 16;
-          return sleep(30);
+          return sleep(20);
         case 16:
         case "end":
           return _context6.stop();
@@ -1436,7 +1444,6 @@ function padding_zero(num, p) {
 }
 function dec2HexString(n) {
   return padding_zero((n * 1).toString(16), 2);
-  //return padding_zero((n*1).toString(16).toUpperCase(),2);
 }
 function session(_x14) {
   return _session.apply(this, arguments);
@@ -1454,57 +1461,55 @@ function _session() {
           endpointIn = pasoriDeviceModel.endPointInNum; //console.log("session_endPointInNum:", pasoriDeviceModel.endPointInNum);
           // RC-S300
           if (!(device.productId === 0x0dc8 || device.productId === 0x0dc9)) {
-            _context9.next = 47;
+            _context9.next = 42;
             break;
           }
-          console.log("RC-S300");
+          //console.log("RC-S300");
           len = 50; //console.log("session_endPointOutNum:", endpointOut);
           //console.log("session_endPointInNum:", endpointIn);
-          _context9.next = 8;
-          return send300(device, endpointOut, [0xFF, 0x56, 0x00, 0x00]);
-        case 8:
-          _context9.next = 10;
-          return receive(device, endpointIn, len);
-        case 10:
-          _context9.next = 12;
+          // firmware version
+          //await send300(device, endpointOut, [0xFF, 0x56, 0x00, 0x00]);
+          //await receive(device, endpointIn, len);
+          // endtransparent
+          _context9.next = 7;
           return send300(device, endpointOut, [0xFF, 0x50, 0x00, 0x00, 0x02, 0x82, 0x00, 0x00]);
-        case 12:
-          _context9.next = 14;
+        case 7:
+          _context9.next = 9;
           return receive(device, endpointIn, len);
-        case 14:
-          _context9.next = 16;
+        case 9:
+          _context9.next = 11;
           return send300(device, endpointOut, [0xFF, 0x50, 0x00, 0x00, 0x02, 0x81, 0x00, 0x00]);
-        case 16:
-          _context9.next = 18;
+        case 11:
+          _context9.next = 13;
           return receive(device, endpointIn, len);
-        case 18:
-          _context9.next = 20;
+        case 13:
+          _context9.next = 15;
           return send300(device, endpointOut, [0xFF, 0x50, 0x00, 0x00, 0x02, 0x83, 0x00, 0x00]);
-        case 20:
-          _context9.next = 22;
+        case 15:
+          _context9.next = 17;
           return receive(device, endpointIn, len);
-        case 22:
-          _context9.next = 24;
+        case 17:
+          _context9.next = 19;
           return send300(device, endpointOut, [0xFF, 0x50, 0x00, 0x00, 0x02, 0x84, 0x00, 0x00]);
-        case 24:
-          _context9.next = 26;
+        case 19:
+          _context9.next = 21;
           return receive(device, endpointIn, len);
-        case 26:
-          _context9.next = 28;
+        case 21:
+          _context9.next = 23;
           return send300(device, endpointOut, [0xff, 0x50, 0x00, 0x02, 0x04, 0x8f, 0x02, 0x03, 0x00, 0x00]);
-        case 28:
-          _context9.next = 30;
+        case 23:
+          _context9.next = 25;
           return receive(device, endpointIn, len);
-        case 30:
-          _context9.next = 32;
+        case 25:
+          _context9.next = 27;
           return send300(device, endpointOut, [0xFF, 0x50, 0x00, 0x01, 0x00, 0x00, 0x11, 0x5F, 0x46, 0x04, 0xA0, 0x86, 0x01, 0x00, 0x95, 0x82, 0x00, 0x06, 0x06, 0x00, 0xFF, 0xFF, 0x01, 0x00, 0x00, 0x00, 0x00]);
-        case 32:
-          _context9.next = 34;
+        case 27:
+          _context9.next = 29;
           return receive(device, endpointIn, len);
-        case 34:
+        case 29:
           poling_res_f = _context9.sent;
           if (!(poling_res_f.length == 46)) {
-            _context9.next = 45;
+            _context9.next = 40;
             break;
           }
           idmStr = '';
@@ -1513,27 +1518,32 @@ function _session() {
           });
           idmStr = idm.join('');
           idmNum = JSON.parse(JSON.stringify(idmStr));
-          _context9.next = 42;
+          _context9.next = 37;
           return setIdmNum(device, idmNum);
-        case 42:
+        case 37:
           return _context9.abrupt("return");
-        case 45:
-          _context9.next = 47;
+        case 40:
+          _context9.next = 42;
           return setIdmNum(device, '');
-        case 47:
+        case 42:
           if (!(device.productId === 0x06C1 || device.productId === 0x06C3)) {
-            _context9.next = 104;
+            _context9.next = 98;
             break;
           }
-          console.log("RC-S380");
-
-          //console.log("session_endPointOutNum:", endpointOut);
-          //console.log("session_endPointInNum:", endpointIn);
-          _context9.next = 51;
+          _context9.next = 45;
           return send(device, endpointOut, [0x00, 0x00, 0xff, 0x00, 0xff, 0x00]);
+        case 45:
+          _context9.next = 47;
+          return send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x2a, 0x01, 0xff, 0x00]);
+        case 47:
+          _context9.next = 49;
+          return receive(device, endpointIn, 6);
+        case 49:
+          _context9.next = 51;
+          return receive(device, endpointIn, 13);
         case 51:
           _context9.next = 53;
-          return send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x2a, 0x01, 0xff, 0x00]);
+          return send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x06, 0x00, 0x24, 0x00]);
         case 53:
           _context9.next = 55;
           return receive(device, endpointIn, 6);
@@ -1551,7 +1561,7 @@ function _session() {
           return receive(device, endpointIn, 13);
         case 63:
           _context9.next = 65;
-          return send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x03, 0x00, 0xfd, 0xd6, 0x06, 0x00, 0x24, 0x00]);
+          return send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x06, 0x00, 0xfa, 0xd6, 0x00, 0x01, 0x01, 0x0f, 0x01, 0x18, 0x00]);
         case 65:
           _context9.next = 67;
           return receive(device, endpointIn, 6);
@@ -1560,7 +1570,7 @@ function _session() {
           return receive(device, endpointIn, 13);
         case 69:
           _context9.next = 71;
-          return send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x06, 0x00, 0xfa, 0xd6, 0x00, 0x01, 0x01, 0x0f, 0x01, 0x18, 0x00]);
+          return send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x28, 0x00, 0xd8, 0xd6, 0x02, 0x00, 0x18, 0x01, 0x01, 0x02, 0x01, 0x03, 0x00, 0x04, 0x00, 0x05, 0x00, 0x06, 0x00, 0x07, 0x08, 0x08, 0x00, 0x09, 0x00, 0x0a, 0x00, 0x0b, 0x00, 0x0c, 0x00, 0x0e, 0x04, 0x0f, 0x00, 0x10, 0x00, 0x11, 0x00, 0x12, 0x00, 0x13, 0x06, 0x4b, 0x00]);
         case 71:
           _context9.next = 73;
           return receive(device, endpointIn, 6);
@@ -1569,7 +1579,7 @@ function _session() {
           return receive(device, endpointIn, 13);
         case 75:
           _context9.next = 77;
-          return send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x28, 0x00, 0xd8, 0xd6, 0x02, 0x00, 0x18, 0x01, 0x01, 0x02, 0x01, 0x03, 0x00, 0x04, 0x00, 0x05, 0x00, 0x06, 0x00, 0x07, 0x08, 0x08, 0x00, 0x09, 0x00, 0x0a, 0x00, 0x0b, 0x00, 0x0c, 0x00, 0x0e, 0x04, 0x0f, 0x00, 0x10, 0x00, 0x11, 0x00, 0x12, 0x00, 0x13, 0x06, 0x4b, 0x00]);
+          return send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x04, 0x00, 0xfc, 0xd6, 0x02, 0x00, 0x18, 0x10, 0x00]);
         case 77:
           _context9.next = 79;
           return receive(device, endpointIn, 6);
@@ -1578,26 +1588,17 @@ function _session() {
           return receive(device, endpointIn, 13);
         case 81:
           _context9.next = 83;
-          return send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x04, 0x00, 0xfc, 0xd6, 0x02, 0x00, 0x18, 0x10, 0x00]);
+          return send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x0a, 0x00, 0xf6, 0xd6, 0x04, 0x6e, 0x00, 0x06, 0x00, 0xff, 0xff, 0x01, 0x00, 0xb3, 0x00]);
         case 83:
           _context9.next = 85;
           return receive(device, endpointIn, 6);
         case 85:
           _context9.next = 87;
-          return receive(device, endpointIn, 13);
-        case 87:
-          _context9.next = 89;
-          return send(device, endpointOut, [0x00, 0x00, 0xff, 0xff, 0xff, 0x0a, 0x00, 0xf6, 0xd6, 0x04, 0x6e, 0x00, 0x06, 0x00, 0xff, 0xff, 0x01, 0x00, 0xb3, 0x00]);
-        case 89:
-          _context9.next = 91;
-          return receive(device, endpointIn, 6);
-        case 91:
-          _context9.next = 93;
           return receive(device, endpointIn, 37);
-        case 93:
+        case 87:
           _idm = _context9.sent.slice(17, 25);
           if (!(_idm.length > 0)) {
-            _context9.next = 102;
+            _context9.next = 96;
             break;
           }
           _idmStr = '';
@@ -1608,15 +1609,15 @@ function _session() {
             _idmStr += _idm[i].toString(16);
           }
           _idmNum = JSON.parse(JSON.stringify(_idmStr));
-          _context9.next = 100;
+          _context9.next = 94;
           return setIdmNum(device, _idmNum);
-        case 100:
-          _context9.next = 104;
+        case 94:
+          _context9.next = 98;
           break;
-        case 102:
-          _context9.next = 104;
+        case 96:
+          _context9.next = 98;
           return setIdmNum(device, '');
-        case 104:
+        case 98:
         case "end":
           return _context9.stop();
       }
@@ -1627,7 +1628,6 @@ function _session() {
 function getIdmNum(deviceNumber) {
   //console.log("getIdmNum:", deviceNumber);
   if (deviceNumber > 0 && deviceNumber <= nfcDevices.length) {
-    //console.log("getIdmNumNfc:", nfcDevices);
     return nfcDevices[deviceNumber - 1].idmNum;
   }
   return null; // 範囲外の場合はnullを返す
@@ -1638,8 +1638,7 @@ function setIdmNum(device, idmNum) {
   var deviceIndex = nfcDevices.findIndex(function (d) {
     return d.device && d.device.serialNumber === device.serialNumber;
   });
-  console.log("IDm #", deviceIndex + 1, ": ", idmNum);
-  //console.log("setIdmIdx:", deviceIndex);
+  console.log("IDm #", deviceIndex + 1, ": ", idmNum, "(", device.productName, ":", device.serialNumber, ")");
   if (deviceIndex !== -1) {
     nfcDevices[deviceIndex].idmNum = idmNum;
   }
@@ -1677,6 +1676,19 @@ function sleep(msec) {
     return setTimeout(function () {
       resolve();
     }, msec);
+  });
+}
+function deviceWaiter(msec) {
+  return new Promise(function (resolve, reject) {
+    return setTimeout(function () {
+      if (!deviceOpening) {
+        reject();
+      } else {
+        resolve();
+      }
+    }, msec);
+  }).catch(function () {
+    return deviceWaiter(msec);
   });
 }
 
