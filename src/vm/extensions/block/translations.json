@@ -1,6 +1,22 @@
 {
   "en": {
-    "pasorich.name": "PaSoRich"
+    "pasorich.name": "PaSoRich",
+    "pasorich.push2Connect": "Push to Connect.",
+    "pasorich.Connect": "Connect",
+    "pasorich.readPasori": "read #[DEVICE_NUMBER]reader",
+    "pasorich.getIdm": "IDm of #[DEVICE_NUMBER]",
+    "pasorich.getHashedIdm": "HexIDm",
+    "pasorich.resetIdm": "reset IDm",
+    "pasorich.resetDevice": "reset Device",
+    "pasorich.whenRead": "when read #[DEVICE_NUMBER]reader",
+    "pasorich.getReadingFlag": "reading",
+    "pasorich.getWaitingFlag": "waiting",
+    "pasorich.readingDone": "reading done",
+    "pasorich.ConnectReading": "reading...",
+    "pasorich.ConnectConnected": "connected...",
+    "pasorich.ConnectConnecting": "connecting...",
+    "pasorich.ConnectSuccess": "connected...",
+    "pasorich.ConnectFailure": "connection failed..."
   },
   "ja": {
     "pasorich.name": "パソリッチ",
@@ -39,6 +55,5 @@
     "pasorich.ConnectConnecting": "せつぞくちゅう...",
     "pasorich.ConnectSuccess": "せつぞくせいこう...",
     "pasorich.ConnectFailure": "せつぞくしっぱい..."
-
   }
 }
