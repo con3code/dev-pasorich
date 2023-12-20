@@ -1,7 +1,7 @@
-# dev PaSoRich 1.5
+# dev PaSoRich 2.0
 An example extension for [Xcratch](https://xcratch.github.io/)
 
-This extension add extra-block "do it", that executes string in its input field as a sentence in Javascript and return the result.
+This extension read SmartCard(Felica)'s IDm with PaSoRi.
 
 
 ## ✨ What You Can Do With This Extension
@@ -47,3 +47,8 @@ Open this page from [https://con3code.github.io/dev-pasorich/](https://con3code.
 ## 🤝 Contributing
 
 Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/con3code/dev-pasorich/issues). 
+
+
+## 
+
+PaSoRi is a registered trademark or trademark of Sony Group Corporation or its affiliated companies.

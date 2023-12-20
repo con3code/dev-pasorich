@@ -1,7 +1,7 @@
 /*
 
 PaSoRich for Xcratch
-20231220 - 2.0d(008)
+20231220 - 2.0d(009)
 
 */
 
@@ -294,11 +294,11 @@ class Scratch3Pasorich {
         return {
             id: Scratch3Pasorich.EXTENSION_ID,
             name: Scratch3Pasorich.EXTENSION_NAME,
-            color1: '#608DD3',
-            color2: '#608DD3',
             extensionURL: Scratch3Pasorich.extensionURL,
             blockIconURI: blockIcon,
             showStatusButton: false,
+            color1: '#608DD3',
+            color2: '#608DD3',
             blocks: [
                 {
                     opcode: 'openPasori',
@@ -348,7 +348,7 @@ class Scratch3Pasorich {
                     text: formatMessage({
                         id: 'pasorich.resetIdm',
                         default: 'reset IDm',
-                        description: 'reset IDm and Variables'
+                        description: 'reset IDm Variables'
                     }),
                     blockType: BlockType.COMMAND,
                 },

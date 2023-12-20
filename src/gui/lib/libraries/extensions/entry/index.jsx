@@ -19,7 +19,7 @@ const entry = {
         return formatMessage({
             id: 'pasorich.entry.name',
             default: 'PaSoRich',
-            description: 'name of the extension'
+            description: 'Name of the extension'
         });
     },
     extensionId: 'pasorich',
@@ -29,7 +29,7 @@ const entry = {
     insetIconURL: insetIconURL,
     get description () {
         return formatMessage({
-            defaultMessage: 'an extension for Xcratch',
+            defaultMessage: 'Read SmartCard IDm.',
             description: 'Description for this extension',
             id: 'pasorich.entry.description'
         });
